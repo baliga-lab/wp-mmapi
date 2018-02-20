@@ -77,51 +77,50 @@ function add_query_vars_filter($vars) {
 function mmapi_init()
 {
     // add all javascript and style files that are used by our plugin
+    wp_enqueue_style('jquery-ui', plugin_dir_url(__FILE__) . 'css/jquery-ui.css');
     wp_enqueue_style('datatables', plugin_dir_url(__FILE__) . 'css/jquery.dataTables.min.css');
     wp_enqueue_style('wp-mmapi', plugin_dir_url(__FILE__) . 'css/wp-mmapi.css');
     wp_enqueue_style('qtip', plugin_dir_url(__FILE__) . 'css/jquery.qtip.min.css', null, false, false);
 
+    wp_enqueue_script('jquery-ui-autocomplete');
     wp_enqueue_script('d3', plugin_dir_url(__FILE__) . 'js/d3.min.js', array('jquery'));
     wp_enqueue_script('datatables', plugin_dir_url(__FILE__) . 'js/jquery.dataTables.min.js', array('jquery'));
     wp_enqueue_script('qtip', plugin_dir_url(__FILE__) . 'js/jquery.qtip.min.js', array('jquery'), false, true);
     wp_enqueue_script('highcharts', plugin_dir_url(__FILE__) . 'js/highcharts.js', array('jquery'));
 
     mmapi_add_shortcodes();
-    mmapi_datatables_source_init();
+    mmapi_ajax_source_init();
     add_filter('query_vars', 'add_query_vars_filter');
 }
 
 function search_mmapi()
 {
     $search_term = $_POST['search_term'];
-    error_log("search_mmapi(): " . $search_term);
     // ask search API if there are results for this term and what type
     $source_url = get_option('source_url', '');
     $result_json = file_get_contents($source_url . "/api/v1.0.0/search/" .
                                      rawurlencode($search_term));
     $result = json_decode($result_json);
     if ($result->found == "no") {
-        error_log("no entries found");
         $page = get_page_by_path('no-search-results-found');
-        wp_safe_redirect(get_permalink($page->ID) . "?search_term=" . $search_term);
+        wp_safe_redirect(get_permalink($page->ID) . "?search_term=" . rawurlencode($search_term));
         exit;
     } else {
-        error_log("entries found, type: " . $result->data_type);
         if ($result->data_type == "bicluster") {
             $page = get_page_by_path('bicluster');
-            wp_safe_redirect(get_permalink($page->ID) . "?bicluster=" . $search_term);
+            wp_safe_redirect(get_permalink($page->ID) . "?bicluster=" . rawurlencode($search_term));
             exit;
         } else if ($result->data_type == "mutation") {
             $page = get_page_by_path('mutation');
-            wp_safe_redirect(get_permalink($page->ID) . "?mutation=" . $search_term);
+            wp_safe_redirect(get_permalink($page->ID) . "?mutation=" . rawurlencode($search_term));
             exit;
         } else if ($result->data_type == "regulator") {
             $page = get_page_by_path('regulator');
-            wp_safe_redirect(get_permalink($page->ID) . "?regulator=" . $search_term);
+            wp_safe_redirect(get_permalink($page->ID) . "?regulator=" . rawurlencode($search_term));
             exit;
         } else {
             $page = get_page_by_path('no-search-results-found');
-            wp_safe_redirect(get_permalink($page->ID) . "?search_term=" . $search_term);
+            wp_safe_redirect(get_permalink($page->ID) . "?search_term=" . rawurlencode($search_term));
             exit;
         }
     }

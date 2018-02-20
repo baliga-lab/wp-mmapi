@@ -168,11 +168,22 @@ function bicluster_mutation_tfs_table_shortcode($attr, $content=null)
 
 function search_box_shortcode($attr, $content)
 {
+    $ajax_action = "completions";
     $content = "<form action=\"" . esc_url(admin_url('admin-post.php')) .  "\" method=\"post\">";
-    $content .= "Search Term: <input name=\"search_term\" type=\"text\"></input>";
+    $content .= "Search Term: <input name=\"search_term\" type=\"text\" id=\"mmapi-search\"></input>";
     $content .= "<div style=\"margin-top: 5px;\"><input type=\"submit\" value=\"Search\"></input></div>";
     $content .= "<input type=\"hidden\" name=\"action\" value=\"search_mmapi\">";
     $content .= "</form>";
+    $content .= "<script>";
+    $content .= "  jQuery(document).ready(function() {";
+    $content .= "    jQuery('#mmapi-search').autocomplete({";
+    $content .= "      source: function(request, response) {";
+    $content .= "                jQuery.ajax({ url: ajax_dt.ajax_url, type: 'POST', data: { action: '" . $ajax_action . "', term: request.term }, success: function(data) { response(data.completions) }});";
+    $content .= "              },";
+    $content .= "      minLength: 2";
+    $content .= "    });";
+    $content .= "  });";
+    $content .= "</script>";
     return $content;
 }
 
