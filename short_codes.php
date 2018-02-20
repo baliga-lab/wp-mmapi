@@ -47,7 +47,7 @@ function mutation_table_shortcode($attr, $content=null)
     $content .= "  <thead><tr><th>Bicluster</th><th>Regulator</th><th>Role</th></tr></thead>";
     $content .= "  <tbody>";
     foreach ($entries as $e) {
-        $content .= "    <tr><td>" . $e->bicluster . "</td><td><a href=\"index.php/regulator/?regulator=" . $e->regulator . "\">" . $e->regulator . "</a></td><td>" . $e->role . "</td></tr>";
+        $content .= "    <tr><td><a href=\"index.php/bicluster/?bicluster=" . $e->bicluster . "\">" . $e->bicluster . "</a></td><td><a href=\"index.php/regulator/?regulator=" . $e->regulator . "\">" . $e->regulator . "</a></td><td>" . $e->role . "</td></tr>";
     }
     $content .= "  </tbody>";
     $content .= "</table>";
@@ -74,7 +74,7 @@ function regulator_table_shortcode($attr, $content=null)
     $content .= "  <thead><tr><th>Bicluster</th><th>Role</th></tr></thead>";
     $content .= "  <tbody>";
     foreach ($entries as $e) {
-        $content .= "    <tr><td>" . $e->bicluster . "</td><td>" . $e->role . "</td></tr>";
+        $content .= "    <tr><td><a href=\"index.php/bicluster/?bicluster=" . $e->bicluster . "\">" . $e->bicluster . "</a></td><td>" . $e->role . "</td></tr>";
     }
     $content .= "  </tbody>";
     $content .= "</table>";
@@ -126,7 +126,7 @@ function bicluster_tfs_table_shortcode($attr, $content=null)
     $content .= "  <thead><tr><th>Regulator</th><th>Role</th></tr></thead>";
     $content .= "  <tbody>";
     foreach ($entries as $e) {
-        $content .= "    <tr><td>" . $e->tf . "</td><td>" . $e->role . "</td></tr>";
+        $content .= "    <tr><td><a href=\"index.php/regulator/?regulator=" . $e->tf . "\">" . $e->tf . "</a></td><td>" . $e->role . "</td></tr>";
     }
     $content .= "  </tbody>";
     $content .= "</table>";
@@ -152,7 +152,7 @@ function bicluster_mutation_tfs_table_shortcode($attr, $content=null)
     $content .= "  <thead><tr><th>Mutation</th><th>Role</th><th>Regulator</th></tr></thead>";
     $content .= "  <tbody>";
     foreach ($entries as $e) {
-        $content .= "    <tr><td>" . $e->mutation . "</td><td>" . $e->role . "</td><td>" . $e->tf . "</td></tr>";
+        $content .= "    <tr><td><a href=\"index.php/mutation/?mutation=" . $e->mutation . "\">" . $e->mutation . "</a></td><td>" . $e->role . "</td><td>" . $e->tf . "</td></tr>";
     }
     $content .= "  </tbody>";
     $content .= "</table>";
