@@ -95,9 +95,36 @@ function search_mmapi()
 {
     $search_term = $_POST['search_term'];
     error_log("search_mmapi(): " . $search_term);
-    $page = get_page_by_path('search-results');
-    wp_safe_redirect(get_permalink($page->ID) . "?search_term=" . $search_term);
-    exit;
+    // ask search API if there are results for this term and what type
+    $source_url = get_option('source_url', '');
+    $result_json = file_get_contents($source_url . "/api/v1.0.0/search/" .
+                                     rawurlencode($search_term));
+    $result = json_decode($result_json);
+    if ($result->found == "no") {
+        error_log("no entries found");
+        $page = get_page_by_path('no-search-results-found');
+        wp_safe_redirect(get_permalink($page->ID) . "?search_term=" . $search_term);
+        exit;
+    } else {
+        error_log("entries found, type: " . $result->data_type);
+        if ($result->data_type == "bicluster") {
+            $page = get_page_by_path('bicluster');
+            wp_safe_redirect(get_permalink($page->ID) . "?bicluster=" . $search_term);
+            exit;
+        } else if ($result->data_type == "mutation") {
+            $page = get_page_by_path('mutation');
+            wp_safe_redirect(get_permalink($page->ID) . "?mutation=" . $search_term);
+            exit;
+        } else if ($result->data_type == "regulator") {
+            $page = get_page_by_path('regulator');
+            wp_safe_redirect(get_permalink($page->ID) . "?regulator=" . $search_term);
+            exit;
+        } else {
+            $page = get_page_by_path('no-search-results-found');
+            wp_safe_redirect(get_permalink($page->ID) . "?search_term=" . $search_term);
+            exit;
+        }
+    }
 }
 
 add_action('admin_init', 'mmapi_settings_init');
