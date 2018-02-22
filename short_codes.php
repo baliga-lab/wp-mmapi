@@ -204,13 +204,25 @@ function search_results_shortcode($attr, $content)
 
 function bicluster_cytoscape_shortcode($attr, $content)
 {
+    $bicluster_name = get_query_var('bicluster');
+    $source_url = get_option('source_url', '');
+    $result_json = file_get_contents($source_url . "/api/v1.0.0/bicluster_network/" .
+                                     rawurlencode($bicluster_name));
     $content = "";
-    $content .= "<div id=\"cytoscape\">CYTOSCAPE.JS HERE</div>";
+    $content .= "<div id=\"cytoscape\"><h2>Influences</h2></div>";
     $content .= "<script>";
     $content .= "  jQuery(document).ready(function() {";
     $content .= "    var cy = cytoscape({";
     $content .= "      container: jQuery('#cytoscape'),";
-    $content .= "      elements: [{data: {id: 'a'}}, {data: {id: 'b'}}, {data: {id: 'ab', source: 'a', target: 'b'}}]";
+    $content .= "      style: [";
+    $content .= "        { selector: 'node', style: { label: 'data(id)'}},";
+    $content .= "        { selector: 'edge', style: { label: 'data(role)', 'line-color': '#000', 'target-arrow-shape': 'triangle', 'target-arrow-color': '#000', 'opacity': 0.8, 'curve-style': 'bezier'}},";
+    $content .= "        { selector: '.bicluster', style: { 'background-color': 'red', 'shape': 'square'}},";
+    $content .= "        { selector: '.tf', style: { 'background-color': 'blue', 'shape': 'triangle'}},";
+    $content .= "        { selector: '.mutation', style: { 'background-color': 'green', 'shape': 'diamond'}}";
+    $content .= "      ],";
+    $content .= "      layout: { name: 'dagre' },";
+    $content .= "      elements: " . json_encode(json_decode($result_json)->elements);
     $content .= "    });";
     $content .= "  });";
     $content .= "</script>";

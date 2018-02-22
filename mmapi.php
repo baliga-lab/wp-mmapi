@@ -89,6 +89,8 @@ function mmapi_init()
     wp_enqueue_script('qtip', plugin_dir_url(__FILE__) . 'js/jquery.qtip.min.js', array('jquery'), false, true);
     wp_enqueue_script('highcharts', plugin_dir_url(__FILE__) . 'js/highcharts.js', array('jquery'));
     wp_enqueue_script('cytoscape', plugin_dir_url(__FILE__) . 'js/cytoscape.min.js');
+    wp_enqueue_script('dagre', plugin_dir_url(__FILE__) . 'js/dagre.min.js');
+    wp_enqueue_script('cytoscape-dagre', plugin_dir_url(__FILE__) . 'js/cytoscape-dagre.js');
 
     mmapi_add_shortcodes();
     mmapi_ajax_source_init();
