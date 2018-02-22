@@ -70,6 +70,7 @@ function add_query_vars_filter($vars) {
     $vars[] = "bicluster";
     $vars[] = "regulator";
     $vars[] = "mutation";
+    $vars[] = "gene";
     $vars[] = "search_term";
     return $vars;
 }
@@ -87,6 +88,7 @@ function mmapi_init()
     wp_enqueue_script('datatables', plugin_dir_url(__FILE__) . 'js/jquery.dataTables.min.js', array('jquery'));
     wp_enqueue_script('qtip', plugin_dir_url(__FILE__) . 'js/jquery.qtip.min.js', array('jquery'), false, true);
     wp_enqueue_script('highcharts', plugin_dir_url(__FILE__) . 'js/highcharts.js', array('jquery'));
+    wp_enqueue_script('cytoscape', plugin_dir_url(__FILE__) . 'js/cytoscape.min.js');
 
     mmapi_add_shortcodes();
     mmapi_ajax_source_init();
@@ -117,6 +119,10 @@ function search_mmapi()
         } else if ($result->data_type == "regulator") {
             $page = get_page_by_path('regulator');
             wp_safe_redirect(get_permalink($page->ID) . "?regulator=" . rawurlencode($search_term));
+            exit;
+        } else if ($result->data_type == "gene") {
+            $page = get_page_by_path('gene-biclusters');
+            wp_safe_redirect(get_permalink($page->ID) . "?gene=" . rawurlencode($search_term));
             exit;
         } else {
             $page = get_page_by_path('no-search-results-found');

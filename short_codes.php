@@ -100,7 +100,7 @@ function bicluster_genes_table_shortcode($attr, $content=null)
     $content .= "  <thead><tr><th>Gene</th></tr></thead>";
     $content .= "  <tbody>";
     foreach ($entries as $e) {
-        $content .= "    <tr><td>" . $e . "</td></tr>";
+        $content .= "    <tr><td><a href=\"index.php/gene-biclusters?gene=" . $e . "\">" . $e . "</a></td></tr>";
     }
     $content .= "  </tbody>";
     $content .= "</table>";
@@ -202,6 +202,62 @@ function search_results_shortcode($attr, $content)
     return $content;
 }
 
+function bicluster_cytoscape_shortcode($attr, $content)
+{
+    $content = "";
+    $content .= "<div id=\"cytoscape\">CYTOSCAPE.JS HERE</div>";
+    $content .= "<script>";
+    $content .= "  jQuery(document).ready(function() {";
+    $content .= "    var cy = cytoscape({";
+    $content .= "      container: jQuery('#cytoscape'),";
+    $content .= "      elements: [{data: {id: 'a'}}, {data: {id: 'b'}}, {data: {id: 'ab', source: 'a', target: 'b'}}]";
+    $content .= "    });";
+    $content .= "  });";
+    $content .= "</script>";
+    return $content;
+}
+
+function gene_biclusters_table_shortcode($attr, $content=null)
+{
+    $gene_name = get_query_var('gene');
+    $source_url = get_option('source_url', '');
+    $result_json = file_get_contents($source_url . "/api/v1.0.0/biclusters_for_gene/" .
+                                     rawurlencode($gene_name));
+    $entries = json_decode($result_json)->biclusters;
+    $content = "";
+    $content = "<h3>Biclusters for gene " . $gene_name . "</h3>";
+    $content .= "<table id=\"biclusters\" class=\"stripe row-border\">";
+    $content .= "  <thead><tr><th>Bicluster</th></tr></thead>";
+    $content .= "  <tbody>";
+    foreach ($entries as $e) {
+        $content .= "    <tr><td><a href=\"index.php/bicluster/?bicluster=" . $e . "\">" . $e . "</a></td></tr>";
+    }
+    $content .= "  </tbody>";
+    $content .= "</table>";
+    $content .= "<script>";
+    $content .= "  jQuery(document).ready(function() {";
+    $content .= "    jQuery('#biclusters').DataTable({";
+    $content .= "    })";
+    $content .= "  });";
+    $content .= "</script>";
+    return $content;
+}
+
+function gene_info_shortcode($attr, $content=null)
+{
+    $gene_name = get_query_var('gene');
+    $source_url = get_option('source_url', '');
+    $result_json = file_get_contents($source_url . "/api/v1.0.0/gene_info/" .
+                                     rawurlencode($gene_name));
+    $gene_info = json_decode($result_json);
+    $content = "";
+    $content .= "<div><span class=\"entry-title\">Entrez ID: </span><span>" . $gene_info->entrez_id . "</span></div>";
+    $content .= "<div><span class=\"entry-title\">Ensembl ID: </span><span>" . $gene_info->ensembl_id . "</span></div>";
+    $content .= "<div><span class=\"entry-title\">Preferred Name: </span><span>" . $gene_info->entrez_id . "</span></div>";
+    $content .= "";
+    return $content;
+}
+
 
 function mmapi_add_shortcodes()
 {
@@ -216,6 +272,10 @@ function mmapi_add_shortcodes()
 
     add_shortcode('mmapi_search_box', 'search_box_shortcode');
     add_shortcode('mmapi_search_results', 'search_results_shortcode');
+
+    add_shortcode('gene_biclusters_table', 'gene_biclusters_table_shortcode');
+    add_shortcode('gene_info', 'gene_info_shortcode');
+    add_shortcode('bicluster_cytoscape', 'bicluster_cytoscape_shortcode');
 }
 
 ?>

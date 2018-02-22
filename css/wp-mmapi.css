@@ -3,3 +3,9 @@ table {
   font-size: 10pt;
 }
 */
+
+#cytoscape {
+    width: 600px;
+    height: 300px;
+    display: block;
+}
