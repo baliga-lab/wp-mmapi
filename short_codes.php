@@ -265,7 +265,7 @@ function gene_info_shortcode($attr, $content=null)
     $content = "";
     $content .= "<div><span class=\"entry-title\">Entrez ID: </span><span>" . $gene_info->entrez_id . "</span></div>";
     $content .= "<div><span class=\"entry-title\">Ensembl ID: </span><span>" . $gene_info->ensembl_id . "</span></div>";
-    $content .= "<div><span class=\"entry-title\">Preferred Name: </span><span>" . $gene_info->entrez_id . "</span></div>";
+    $content .= "<div><span class=\"entry-title\">Preferred Name: </span><span>" . $gene_info->preferred . "</span></div>";
     $content .= "";
     return $content;
 }
