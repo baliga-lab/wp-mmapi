@@ -170,8 +170,8 @@ function search_box_shortcode($attr, $content)
 {
     $ajax_action = "completions";
     $content = "<form action=\"" . esc_url(admin_url('admin-post.php')) .  "\" method=\"post\">";
-    $content .= "Search Term: <input name=\"search_term\" type=\"text\" id=\"mmapi-search\"></input>";
-    $content .= "<div style=\"margin-top: 5px;\"><input type=\"submit\" value=\"Search\"></input></div>";
+    $content .= "Search Term: ";
+    $content .= "<div><input name=\"search_term\" type=\"text\" id=\"mmapi-search\"></input><input type=\"submit\" value=\"Search\"></input></div>";
     $content .= "<input type=\"hidden\" name=\"action\" value=\"search_mmapi\">";
     $content .= "</form>";
     $content .= "<script>";
@@ -209,7 +209,7 @@ function bicluster_cytoscape_shortcode($attr, $content)
     $result_json = file_get_contents($source_url . "/api/v1.0.0/bicluster_network/" .
                                      rawurlencode($bicluster_name));
     $content = "";
-    $content .= "<div id=\"cytoscape\"><h2>Influences</h2></div>";
+    $content .= "<div id=\"cytoscape\"><h3>Influences</h3></div>";
     $content .= "<script>";
     $content .= "  jQuery(document).ready(function() {";
     $content .= "    var cy = cytoscape({";
