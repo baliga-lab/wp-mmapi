@@ -171,7 +171,7 @@ function search_box_shortcode($attr, $content)
     $ajax_action = "completions";
     $content = "<form action=\"" . esc_url(admin_url('admin-post.php')) .  "\" method=\"post\">";
     $content .= "Search Term: ";
-    $content .= "<div><input name=\"search_term\" type=\"text\" id=\"mmapi-search\"></input><input type=\"submit\" value=\"Search\"></input></div>";
+    $content .= "<div><input name=\"search_term\" type=\"text\" id=\"mmapi-search\"></input><input type=\"submit\" value=\"Search\" id=\"mmapi-search-button\"></input></div>";
     $content .= "<input type=\"hidden\" name=\"action\" value=\"search_mmapi\">";
     $content .= "</form>";
     $content .= "<script>";
