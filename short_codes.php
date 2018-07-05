@@ -87,6 +87,15 @@ function regulator_table_shortcode($attr, $content=null)
     return $content;
 }
 
+/*
+ * TODO: Add information from EnsEMBL and Uniprot
+ *
+ * Example call to EnsEMBL
+ * https://rest.ensembl.org/lookup/id/ENSG00000214900?content-type=application/json;expand=1
+ *
+ * XREF to Uniprot
+ * https://rest.ensembl.org/xrefs/id/ENSG00000181991?content-type=application/json
+ */
 function bicluster_genes_table_shortcode($attr, $content=null)
 {
     $bicluster_name = get_query_var('bicluster');
@@ -266,6 +275,33 @@ function gene_info_shortcode($attr, $content=null)
     $content .= "<div><span class=\"entry-title\">Entrez ID: </span><span>" . $gene_info->entrez_id . "</span></div>";
     $content .= "<div><span class=\"entry-title\">Ensembl ID: </span><span>" . $gene_info->ensembl_id . "</span></div>";
     $content .= "<div><span class=\"entry-title\">Preferred Name: </span><span>" . $gene_info->preferred . "</span></div>";
+    $content .= "<div><span class=\"entry-title\">Description: </span><span>" . $gene_info->description . "</span></div>";
+    $content .= "<div><span class=\"entry-title\">UniProt ID: </span><span>" . $gene_info->uniprot_id . "</span></div>";
+    $content .= "<div><span class=\"entry-title\">Function: </span><span>" . $gene_info->function . "</span></div>";
+    $content .= "";
+    return $content;
+}
+
+function gene_uniprot_shortcode($attr, $content=null)
+{
+    $gene_name = get_query_var('gene');
+    $source_url = get_option('source_url', '');
+    $result_json = file_get_contents($source_url . "/api/v1.0.0/gene_info/" .
+                                     rawurlencode($gene_name));
+    $gene_info = json_decode($result_json);
+    $content = "";
+    $content .= "<h3>UniProtKB " . $gene_info->uniprot_id . "</h3>";
+    $content .= "<div id=\"uniprot-viewer\"></div>";
+    $content .= "  <script>";
+    $content .= "    window.onload = function() {";
+    $content .= "      var yourDiv = document.getElementById('uniprot-viewer');";
+    $content .= "      var ProtVista = require('ProtVista');";
+    $content .= "      var instance = new ProtVista({";
+    $content .= "        el: yourDiv,";
+    $content .= "        uniprotacc: '" . $gene_info->uniprot_id . "'";
+    $content .= "      });";
+    $content .= "    }";
+    $content .= "  </script>";
     $content .= "";
     return $content;
 }
@@ -287,6 +323,7 @@ function mmapi_add_shortcodes()
 
     add_shortcode('gene_biclusters_table', 'gene_biclusters_table_shortcode');
     add_shortcode('gene_info', 'gene_info_shortcode');
+    add_shortcode('gene_uniprot', 'gene_uniprot_shortcode');
     add_shortcode('bicluster_cytoscape', 'bicluster_cytoscape_shortcode');
 }
 
