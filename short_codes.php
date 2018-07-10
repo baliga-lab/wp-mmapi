@@ -272,7 +272,8 @@ function gene_info_shortcode($attr, $content=null)
                                      rawurlencode($gene_name));
     $gene_info = json_decode($result_json);
     $content = "";
-    $content .= "<h3>" . $gene_info->preferred . " - " . $gene_info->description;
+    $desc = preg_replace('/\[.*\]/', '', $gene_info->description);
+    $content .= "<h3>" . $gene_info->preferred . " - " . $desc;
     $content .= "</h3>";
     $content .= "<div><span class=\"entry-title\">Entrez ID: </span><span><a href=\"https://www.ncbi.nlm.nih.gov/gene/?term=" . $gene_info->entrez_id . "\" target=\"_blank\">" . $gene_info->entrez_id . "</a></span></div>";
     $content .= "<div><span class=\"entry-title\">Ensembl ID: </span><span><a href=\"http://www.ensembl.org/id/" . $gene_info->ensembl_id . "\" target=\"_blank\">" . $gene_info->ensembl_id . "</a></span></div>";
