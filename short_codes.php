@@ -272,11 +272,14 @@ function gene_info_shortcode($attr, $content=null)
                                      rawurlencode($gene_name));
     $gene_info = json_decode($result_json);
     $content = "";
-    $content .= "<div><span class=\"entry-title\">Entrez ID: </span><span>" . $gene_info->entrez_id . "</span></div>";
-    $content .= "<div><span class=\"entry-title\">Ensembl ID: </span><span>" . $gene_info->ensembl_id . "</span></div>";
+    $content .= "<h3>" . $gene_info->preferred . " - " . $gene_info->description;
+    $content .= "</h3>";
+    $content .= "<div><span class=\"entry-title\">Entrez ID: </span><span><a href=\"https://www.ncbi.nlm.nih.gov/gene/?term=" . $gene_info->entrez_id . "\" target=\"_blank\">" . $gene_info->entrez_id . "</a></span></div>";
+    $content .= "<div><span class=\"entry-title\">Ensembl ID: </span><span><a href=\"http://www.ensembl.org/id/" . $gene_info->ensembl_id . "\" target=\"_blank\">" . $gene_info->ensembl_id . "</a></span></div>";
     $content .= "<div><span class=\"entry-title\">Preferred Name: </span><span>" . $gene_info->preferred . "</span></div>";
-    $content .= "<div><span class=\"entry-title\">Description: </span><span>" . $gene_info->description . "</span></div>";
-    $content .= "<div><span class=\"entry-title\">UniProt ID: </span><span>" . $gene_info->uniprot_id . "</span></div>";
+
+
+    $content .= "<div><span class=\"entry-title\">UniProt ID: </span><span><a href=\"https://www.uniprot.org/uniprot/" . $gene_info->uniprot_id . "\" target=\"_blank\">" . $gene_info->uniprot_id . "</a></span></div>";
     $content .= "<div><span class=\"entry-title\">Function: </span><span>" . $gene_info->function . "</span></div>";
     $content .= "";
     return $content;
