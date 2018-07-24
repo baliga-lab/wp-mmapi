@@ -361,7 +361,7 @@ function bicluster_expressions_graph_shortcode($attr, $content)
     $content .= "                   formatter: function() {\n";
     $content .= "                     return this.axis.categories.indexOf(this.value);\n";
     $content .= "                   }}},\n";
-    $content .= "        yAxis: { title: { text: 'Standardized expression'} },\n";
+    $content .= "        yAxis: { title: { text: 'Relative expression'} },\n";
     $content .= "        series: data\n";
     $content .= "     })\n";
     $content .= "   }\n";
@@ -384,6 +384,65 @@ function bicluster_expressions_graph_shortcode($attr, $content)
     return $content;
 }
 
+function bicluster_enrichment_graph_shortcode($attr, $content)
+{
+    $bicluster_name = get_query_var('bicluster');
+
+    $source_url = get_option('source_url', '');
+    $content .= '<div id="bicluster_enrich" style="width: 100%; height: 300px"></div>';
+    $content .= "<script>\n";
+    $content .= "    function makeBiclusterEnrichmentChart(data, conds) {";
+    $content .= "      var x, chart = Highcharts.chart('bicluster_enrich', {\n";
+    $content .= "        chart: { type: 'column' },";
+    $content .= "        title: { text: 'Enrichment of Tumor Subtypes in Quintiles' },\n";
+    $content .= "        xAxis: { title: { text: 'Conditions' }, categories: conds,\n";
+    $content .= "                 labels: {\n";
+    $content .= "                   formatter: function() {\n";
+    $content .= "                     return this.axis.categories.indexOf(this.value);\n";
+    $content .= "                   }}},\n";
+    $content .= "        yAxis: { title: { text: 'Enrichment of Subtypes in Quintiles'} },\n";
+    $content .= "        series: data\n";
+    $content .= "     })\n";
+    $content .= "   }\n";
+
+    $content .= "  function loadBiclusterEnrichment() {\n";
+    $content .= "    jQuery.ajax({\n";
+    $content .= "      url: ajax_dt.ajax_url,\n";
+    $content .= "      method: 'GET',\n";
+    $content .= "      data: {'action': 'bicluster_enrichment_dt', 'bicluster': '" . $bicluster_name . "' }\n";
+    $content .= "    }).done(function(data) {\n";
+    $content .= "      makeBiclusterEnrichmentChart(data.expressions, data.conditions);\n";
+    $content .= "    });\n";
+    $content .= "  };\n";
+
+
+    $content .= "  jQuery(document).ready(function() {\n";
+    $content .= "    loadBiclusterEnrichment();\n";
+    $content .= "  });\n";
+    $content .= "</script>\n";
+    return $content;
+}
+
+
+function bicluster_hallmarks_shortcode($attr, $content)
+{
+    $content = "";
+    $content .= "<h3>Hallmarks</h3>";
+    $content .= "<div style=\"width:100%\">";
+    $content .= "<div style=\"width: 50%; display: inline-block; vertical-align: top\">";
+    $content .= "  <h4>Enriched Hallmarks</h4>";
+    $content .= "  <ul style=\"list-style: none\">";
+    $content .= "    <li><img style=\"width: 20px\" src=\"" . esc_url(plugins_url('images/angiogenesis.gif', __FILE__)). "\"> Inducing angiogenesis</li>";
+    $content .= "  </ul>";
+
+    $content .= "</div>";
+    $content .= "<div style=\"width: 50%; display: inline-block\">";
+    $content .= "  <h4>Legend</h4>>";
+    $content .= "  <img src=\"" . esc_url(plugins_url('images/legend.jpg', __FILE__)). "\">";
+    $content .= "</div>";
+    $content .= "</div>";
+    return $content;
+}
 
 function mmapi_add_shortcodes()
 {
@@ -405,6 +464,8 @@ function mmapi_add_shortcodes()
     add_shortcode('bicluster_cytoscape', 'bicluster_cytoscape_shortcode');
     add_shortcode('bicluster_summary', 'bicluster_summary_shortcode');
     add_shortcode('bicluster_expressions', 'bicluster_expressions_graph_shortcode');
+    add_shortcode('bicluster_enrichment', 'bicluster_enrichment_graph_shortcode');
+    add_shortcode('bicluster_hallmarks', 'bicluster_hallmarks_shortcode');
 }
 
 ?>

@@ -35,6 +35,29 @@ EOT;
     wp_die();
 }
 
+function bicluster_enrichment_dt_callback() {
+    header("Content-type: application/json");
+    $bicluster = $_GET['bicluster'];
+    $source_url = get_option('source_url', '');
+    $exps_json = file_get_contents($source_url . "/api/v1.0.0/bicluster_expressions/" . $bicluster);
+    $exps = json_decode($exps_json);
+    $conditions = json_encode($exps->conditions);
+    $expdata = array();
+    foreach ($exps->expressions as $gene => $values) {
+        $expdata []= (object) array('name' => $gene, 'data' => $values);
+    }
+    $data = json_encode($expdata);
+
+    $doc = <<<EOT
+{
+  "conditions": $conditions,
+  "expressions": $data
+}
+EOT;
+    echo $doc;
+    wp_die();
+}
+
 
 function mmapi_ajax_source_init()
 {
@@ -48,6 +71,9 @@ function mmapi_ajax_source_init()
 
     add_action('wp_ajax_nopriv_bicluster_exps_dt', 'bicluster_exps_dt_callback');
     add_action('wp_ajax_bicluster_exps_dt', 'bicluster_exps_dt_callback');
+
+    add_action('wp_ajax_nopriv_bicluster_enrichment_dt', 'bicluster_enrichment_dt_callback');
+    add_action('wp_ajax_bicluster_enrichment_dt', 'bicluster_enrichment_dt_callback');
 
 }
 
