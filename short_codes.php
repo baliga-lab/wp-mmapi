@@ -103,8 +103,14 @@ function bicluster_genes_table_shortcode($attr, $content=null)
     $result_json = file_get_contents($source_url . "/api/v1.0.0/bicluster/" .
                                      rawurlencode($bicluster_name));
     $entries = json_decode($result_json)->genes;
-    $content = "";
-    $content = "<h3>Genes for bicluster " . $bicluster_name . "</h3>";
+    $content = "<a name=\"genes\"></a>";
+    $content .= "<h3>Genes for bicluster " . $bicluster_name . "</h3>";
+    $content .= "<ul style=\"list-style: none\">";
+    foreach ($entries as $e) {
+        $content .= "  <li style=\"display: inline\"><a href=\"index.php/gene-biclusters?gene=" . $e . "\">" . $e . "</a></li>";
+    }
+    $content .= "</ul>";
+    /*
     $content .= "<table id=\"bc_genes\" class=\"stripe row-border\">";
     $content .= "  <thead><tr><th>Gene</th></tr></thead>";
     $content .= "  <tbody>";
@@ -119,6 +125,7 @@ function bicluster_genes_table_shortcode($attr, $content=null)
     $content .= "    })";
     $content .= "  });";
     $content .= "</script>";
+    */
     return $content;
 }
 
@@ -129,8 +136,8 @@ function bicluster_tfs_table_shortcode($attr, $content=null)
     $result_json = file_get_contents($source_url . "/api/v1.0.0/bicluster/" .
                                      rawurlencode($bicluster_name));
     $entries = json_decode($result_json)->tfs_bc;
-    $content = "";
-    $content = "<h3>Regulators for bicluster " . $bicluster_name . "</h3>";
+    $content = "<a name=\"regulators\"></a>";
+    $content .= "<h3>Regulators for bicluster " . $bicluster_name . "</h3>";
     $content .= "<table id=\"bc_tfs\" class=\"stripe row-border\">";
     $content .= "  <thead><tr><th>Regulator</th><th>Role</th></tr></thead>";
     $content .= "  <tbody>";
@@ -310,6 +317,73 @@ function gene_uniprot_shortcode($attr, $content=null)
     return $content;
 }
 
+function bicluster_summary_shortcode($attr, $content)
+{
+    $bicluster_name = get_query_var('bicluster');
+    $source_url = get_option('source_url', '');
+    $result_json = file_get_contents($source_url . "/api/v1.0.0/bicluster/" .
+                                     rawurlencode($bicluster_name));
+    $result = json_decode($result_json);
+    $num_genes = count($result->genes);
+    $num_regulators = count($result->tfs_bc);
+    $num_patients = 0;
+
+    $content = "";
+    $content .= "<table id=\"summary1\" class=\"row-border\">";
+    $content .= "  <thead><tr><th>Genes</th><th>Patient Tumors</th><th>FPC Var.Exp.<br>(Perm. p-value)</th><th>Survival<br>(p-value)</th><th>Independent Replication</th></tr></thead>";
+    $content .= "  <tbody>";
+    $content .= "    <tr><td><a href=\"#genes\">$num_genes</a></td><td><a href=\"#patients\">$num_patients</a></td><td>-</td><td>-</td><td>-</td></tr>";
+    $content .= "  </tbody>";
+    $content .= "</table>";
+
+    $content .= "<table id=\"summary2\" class=\"row-border\">";
+    $content .= "  <thead><tr><th>Regulators</th><th>Causal Flows</th><th>Enriched GO BPs</th><th>Enriched<br>Hallmarks of Cancer</th></tr></thead>";
+    $content .= "  <tbody>";
+    $content .= "    <tr><td><a href=\"#regulators\">$num_regulators</a></td><td>-</td><td>-</td><td>-</td></tr>";
+    $content .= "  </tbody>";
+    $content .= "</table>";
+    return $content;
+}
+
+function bicluster_expressions_graph_shortcode($attr, $content)
+{
+    $bicluster_name = get_query_var('bicluster');
+
+    $source_url = get_option('source_url', '');
+    $content .= '<div id="bicluster_exps" style="width: 100%; height: 300px"></div>';
+    $content .= "<script>\n";
+    $content .= "    function makeBiclusterExpChart(data, conds) {";
+    $content .= "      var x, chart = Highcharts.chart('bicluster_exps', {\n";
+    $content .= "        chart: { type: 'line' },";
+    $content .= "        title: { text: 'Bicluster Expressions' },\n";
+    $content .= "        xAxis: { title: { text: 'Conditions' }, categories: conds,\n";
+    $content .= "                 labels: {\n";
+    $content .= "                   formatter: function() {\n";
+    $content .= "                     return this.axis.categories.indexOf(this.value);\n";
+    $content .= "                   }}},\n";
+    $content .= "        yAxis: { title: { text: 'Standardized expression'} },\n";
+    $content .= "        series: data\n";
+    $content .= "     })\n";
+    $content .= "   }\n";
+
+    $content .= "  function loadBiclusterExpressions() {\n";
+    $content .= "    jQuery.ajax({\n";
+    $content .= "      url: ajax_dt.ajax_url,\n";
+    $content .= "      method: 'GET',\n";
+    $content .= "      data: {'action': 'bicluster_exps_dt', 'bicluster': '" . $bicluster_name . "' }\n";
+    $content .= "    }).done(function(data) {\n";
+    $content .= "      makeBiclusterExpChart(data.expressions, data.conditions);\n";
+    $content .= "    });\n";
+    $content .= "  };\n";
+
+
+    $content .= "  jQuery(document).ready(function() {\n";
+    $content .= "    loadBiclusterExpressions();\n";
+    $content .= "  });\n";
+    $content .= "</script>\n";
+    return $content;
+}
+
 
 function mmapi_add_shortcodes()
 {
@@ -329,6 +403,8 @@ function mmapi_add_shortcodes()
     add_shortcode('gene_info', 'gene_info_shortcode');
     add_shortcode('gene_uniprot', 'gene_uniprot_shortcode');
     add_shortcode('bicluster_cytoscape', 'bicluster_cytoscape_shortcode');
+    add_shortcode('bicluster_summary', 'bicluster_summary_shortcode');
+    add_shortcode('bicluster_expressions', 'bicluster_expressions_graph_shortcode');
 }
 
 ?>
