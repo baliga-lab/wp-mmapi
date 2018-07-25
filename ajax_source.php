@@ -18,17 +18,10 @@ function bicluster_exps_dt_callback() {
     $source_url = get_option('source_url', '');
     $exps_json = file_get_contents($source_url . "/api/v1.0.0/bicluster_expressions/" . $bicluster);
     $exps = json_decode($exps_json);
-    $conditions = json_encode($exps->conditions);
-    $expdata = array();
-    foreach ($exps->expressions as $gene => $values) {
-        $expdata []= (object) array('name' => $gene, 'data' => $values);
-    }
-    $data = json_encode($expdata);
-
+    $data = json_encode($exps->data);
     $doc = <<<EOT
 {
-  "conditions": $conditions,
-  "expressions": $data
+  "data": $data
 }
 EOT;
     echo $doc;

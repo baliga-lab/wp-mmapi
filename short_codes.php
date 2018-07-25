@@ -353,17 +353,13 @@ function bicluster_expressions_graph_shortcode($attr, $content)
     $source_url = get_option('source_url', '');
     $content .= '<div id="bicluster_exps" style="width: 100%; height: 300px"></div>';
     $content .= "<script>\n";
-    $content .= "    function makeBiclusterExpChart(data, conds) {";
+    $content .= "    function makeBiclusterExpChart(data) {";
     $content .= "      var x, chart = Highcharts.chart('bicluster_exps', {\n";
-    $content .= "        chart: { type: 'line' },";
+    $content .= "        chart: { type: 'boxplot' },";
     $content .= "        title: { text: 'Bicluster Expressions' },\n";
-    $content .= "        xAxis: { title: { text: 'Conditions' }, categories: conds,\n";
-    $content .= "                 labels: {\n";
-    $content .= "                   formatter: function() {\n";
-    $content .= "                     return this.axis.categories.indexOf(this.value);\n";
-    $content .= "                   }}},\n";
+    $content .= "        xAxis: { title: { text: 'Conditions' }},\n";
     $content .= "        yAxis: { title: { text: 'Relative expression'} },\n";
-    $content .= "        series: data\n";
+    $content .= "        series: [{name: 'All', showInLegend: false, colorByPoint: true, data: data.data}]\n";
     $content .= "     })\n";
     $content .= "   }\n";
 
@@ -373,7 +369,7 @@ function bicluster_expressions_graph_shortcode($attr, $content)
     $content .= "      method: 'GET',\n";
     $content .= "      data: {'action': 'bicluster_exps_dt', 'bicluster': '" . $bicluster_name . "' }\n";
     $content .= "    }).done(function(data) {\n";
-    $content .= "      makeBiclusterExpChart(data.expressions, data.conditions);\n";
+    $content .= "      makeBiclusterExpChart(data);\n";
     $content .= "    });\n";
     $content .= "  };\n";
 
