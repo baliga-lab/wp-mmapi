@@ -327,6 +327,7 @@ function bicluster_summary_shortcode($attr, $content)
     $num_genes = count($result->genes);
     $num_regulators = count($result->tfs_bc);
     $num_patients = 0;
+    $num_hallmarks = 1;
 
     $content = "";
     $content .= "<table id=\"summary1\" class=\"row-border\">";
@@ -339,7 +340,7 @@ function bicluster_summary_shortcode($attr, $content)
     $content .= "<table id=\"summary2\" class=\"row-border\">";
     $content .= "  <thead><tr><th>Regulators</th><th>Causal Flows</th><th>Enriched GO BPs</th><th>Enriched<br>Hallmarks of Cancer</th></tr></thead>";
     $content .= "  <tbody>";
-    $content .= "    <tr><td><a href=\"#regulators\">$num_regulators</a></td><td>-</td><td>-</td><td>-</td></tr>";
+    $content .= "    <tr><td><a href=\"#regulators\">$num_regulators</a></td><td>-</td><td>-</td><td><a href=\"#hallmarks\">$num_hallmarks</a></td></tr>";
     $content .= "  </tbody>";
     $content .= "</table>";
     return $content;
@@ -427,6 +428,7 @@ function bicluster_enrichment_graph_shortcode($attr, $content)
 function bicluster_hallmarks_shortcode($attr, $content)
 {
     $content = "";
+    $content = "<a name=\"hallmarks\"></a>";
     $content .= "<h3>Hallmarks</h3>";
     $content .= "<div style=\"width:100%\">";
     $content .= "<div style=\"width: 50%; display: inline-block; vertical-align: top\">";
