@@ -330,14 +330,14 @@ function bicluster_summary_shortcode($attr, $content)
     $num_hallmarks = 1;
 
     $content = "";
-    $content .= "<table id=\"summary1\" class=\"row-border\">";
+    $content .= "<table id=\"summary1\" class=\"row-border\" style=\"margin-bottom: 10px\">";
     $content .= "  <thead><tr><th>Genes</th><th>Patient Tumors</th><th>FPC Var.Exp.<br>(Perm. p-value)</th><th>Survival<br>(p-value)</th><th>Independent Replication</th></tr></thead>";
     $content .= "  <tbody>";
     $content .= "    <tr><td><a href=\"#genes\">$num_genes</a></td><td><a href=\"#patients\">$num_patients</a></td><td>-</td><td>-</td><td>-</td></tr>";
     $content .= "  </tbody>";
     $content .= "</table>";
 
-    $content .= "<table id=\"summary2\" class=\"row-border\">";
+    $content .= "<table id=\"summary2\" class=\"row-border\" style=\"margin-bottom: 10px\">";
     $content .= "  <thead><tr><th>Regulators</th><th>Causal Flows</th><th>Enriched GO BPs</th><th>Enriched<br>Hallmarks of Cancer</th></tr></thead>";
     $content .= "  <tbody>";
     $content .= "    <tr><td><a href=\"#regulators\">$num_regulators</a></td><td>-</td><td>-</td><td><a href=\"#hallmarks\">$num_hallmarks</a></td></tr>";
@@ -356,7 +356,7 @@ function bicluster_expressions_graph_shortcode($attr, $content)
     $content .= "    function makeBiclusterExpChart(data) {";
     $content .= "      var x, chart = Highcharts.chart('bicluster_exps', {\n";
     $content .= "        chart: { type: 'boxplot' },";
-    $content .= "        title: { text: 'Bicluster Expressions' },\n";
+    $content .= "        title: { text: 'Bicluster Expressions (Example Data)' },\n";
     $content .= "        xAxis: { title: { text: 'Conditions' }},\n";
     $content .= "        yAxis: { title: { text: 'Relative expression'} },\n";
     $content .= "        series: [{name: 'All', showInLegend: false, colorByPoint: true, data: data.data}]\n";
@@ -391,7 +391,7 @@ function bicluster_enrichment_graph_shortcode($attr, $content)
     $content .= "    function makeBiclusterEnrichmentChart(data, conds) {";
     $content .= "      var x, chart = Highcharts.chart('bicluster_enrich', {\n";
     $content .= "        chart: { type: 'column' },";
-    $content .= "        title: { text: 'Enrichment of Tumor Subtypes in Quintiles' },\n";
+    $content .= "        title: { text: 'Enrichment of Tumor Subtypes in Quintiles (Example Data)' },\n";
     $content .= "        xAxis: { title: { text: 'Conditions' }, categories: conds,\n";
     $content .= "                 labels: {\n";
     $content .= "                   formatter: function() {\n";
