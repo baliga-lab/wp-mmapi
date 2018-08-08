@@ -357,7 +357,7 @@ function bicluster_expressions_graph_shortcode($attr, $content)
     $content .= "    function makeBiclusterExpChart(data) {";
     $content .= "      var x, chart = Highcharts.chart('bicluster_exps', {\n";
     $content .= "        chart: { type: 'boxplot' },";
-    $content .= "        title: { text: 'Bicluster Expressions (Example Data)' },\n";
+    $content .= "        title: { text: 'Bicluster Expressions' },\n";
     $content .= "        xAxis: { title: { text: 'Conditions' }},\n";
     $content .= "        yAxis: { title: { text: 'Relative expression'} },\n";
     $content .= "        series: [{name: 'All', showInLegend: false, colorByPoint: true, data: data.data}]\n";
