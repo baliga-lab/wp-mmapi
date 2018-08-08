@@ -17,6 +17,7 @@ function summary_shortcode($attr, $content=null)
     $content .= "    <tr><td>" . $summary->num_biclusters . "</td><td>Biclusters</td></tr>";
     $content .= "    <tr><td>" . $summary->num_mutations . "</td><td>Mutations</td></tr>";
     $content .= "    <tr><td>" . $summary->num_regulators . "</td><td>Regulators</td></tr>";
+    $content .= "    <tr><td>" . $summary->num_patients . "</td><td>Patients</td></tr>";
     $content .= "  </tbody>";
     $content .= "</table>";
     $content .= "<script>";
@@ -255,10 +256,10 @@ function gene_biclusters_table_shortcode($attr, $content=null)
     $content = "";
     $content = "<h3>Biclusters for gene " . $gene_name . "</h3>";
     $content .= "<table id=\"biclusters\" class=\"stripe row-border\">";
-    $content .= "  <thead><tr><th>Bicluster</th></tr></thead>";
+    $content .= "  <thead><tr><th>Bicluster</th><th>Survival (Hazard Ratio)</th></tr></thead>";
     $content .= "  <tbody>";
     foreach ($entries as $e) {
-        $content .= "    <tr><td><a href=\"index.php/bicluster/?bicluster=" . $e . "\">" . $e . "</a></td></tr>";
+        $content .= "    <tr><td><a href=\"index.php/bicluster/?bicluster=" . $e->cluster_id . "\">" . $e->cluster_id . "</a></td><td>$e->hazard_ratio</td></tr>";
     }
     $content .= "  </tbody>";
     $content .= "</table>";
@@ -331,9 +332,9 @@ function bicluster_summary_shortcode($attr, $content)
 
     $content = "";
     $content .= "<table id=\"summary1\" class=\"row-border\" style=\"margin-bottom: 10px\">";
-    $content .= "  <thead><tr><th>Genes</th><th>Patient Tumors</th><th>FPC Var.Exp.<br>(Perm. p-value)</th><th>Survival<br>(p-value)</th><th>Independent Replication</th></tr></thead>";
+    $content .= "  <thead><tr><th>Genes</th><th>Patient Tumors</th><th>FPC Var.Exp.<br>(Perm. p-value)</th><th>Survival<br>(Cox Hazard Ratio)</th><th>Independent Replication</th></tr></thead>";
     $content .= "  <tbody>";
-    $content .= "    <tr><td><a href=\"#genes\">$num_genes</a></td><td><a href=\"#patients\">$num_patients</a></td><td>-</td><td>-</td><td>-</td></tr>";
+    $content .= "    <tr><td><a href=\"#genes\">$num_genes</a></td><td><a href=\"#patients\">$num_patients</a></td><td>-</td><td>$result->hazard_ratio</td><td>-</td></tr>";
     $content .= "  </tbody>";
     $content .= "</table>";
 
