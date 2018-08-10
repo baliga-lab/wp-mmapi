@@ -447,7 +447,7 @@ function regulator_survival_plot_shortcode($attr, $content=null)
 {
     $regulator_name = get_query_var('regulator');
     $static_url = get_option('static_url', '');
-    $img_url = $static_url . "/survival_plots_tf/" . urlencode($regulator_name) . ".png";
+    $img_url = $static_url . "/survival_plots_tf/" . rawurlencode($regulator_name) . ".png";
 
     // check if available, otherwise return nothing
     $file_headers = @get_headers($img_url);
@@ -465,7 +465,7 @@ function bicluster_survival_plot_shortcode($attr, $content=null)
     $bicluster_name = get_query_var('bicluster');
     $static_url = get_option('static_url', '');
     // check if available, otherwise return nothing
-    $img_url = $static_url . "/survival_plots_biclusters/" . urlencode($bicluster_name) . ".png";
+    $img_url = $static_url . "/survival_plots_biclusters/" . rawurlencode($bicluster_name) . ".png";
     $file_headers = @get_headers($img_url);
     if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found'
         || $file_headers[0] == 'HTTP/1.1 400 Bad Request') {
