@@ -443,6 +443,39 @@ function bicluster_hallmarks_shortcode($attr, $content)
     return $content;
 }
 
+function regulator_survival_plot_shortcode($attr, $content=null)
+{
+    $regulator_name = get_query_var('regulator');
+    $static_url = get_option('static_url', '');
+    $img_url = $static_url . "/survival_plots_tf/" . $regulator_name . ".png";
+
+    // check if available, otherwise return nothing
+    $file_headers = @get_headers($img_url);
+    if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found'
+        || $file_headers[0] == 'HTTP/1.1 400 Bad Request') {
+        return "<p>no survival information available</p>";
+    }
+    else {
+        return "<img src=\"" . $img_url . "\"></img>";
+    }
+}
+
+function bicluster_survival_plot_shortcode($attr, $content=null)
+{
+    $bicluster_name = get_query_var('bicluster');
+    $static_url = get_option('static_url', '');
+    // check if available, otherwise return nothing
+    $img_url = $static_url . "/survival_plots_biclusters/" . $bicluster_name . ".png";
+    $file_headers = @get_headers($img_url);
+    if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found'
+        || $file_headers[0] == 'HTTP/1.1 400 Bad Request') {
+        return "<p>no survival information available</p>";
+    }
+    else {
+        return "<img src=\"" . $img_url . "\"></img>";
+    }
+}
+
 function mmapi_add_shortcodes()
 {
     add_shortcode('summary', 'summary_shortcode');
@@ -465,6 +498,9 @@ function mmapi_add_shortcodes()
     add_shortcode('bicluster_expressions', 'bicluster_expressions_graph_shortcode');
     add_shortcode('bicluster_enrichment', 'bicluster_enrichment_graph_shortcode');
     add_shortcode('bicluster_hallmarks', 'bicluster_hallmarks_shortcode');
+
+    add_shortcode('regulator_survival_plot', 'regulator_survival_plot_shortcode');
+    add_shortcode('bicluster_survival_plot', 'bicluster_survival_plot_shortcode');
 }
 
 ?>

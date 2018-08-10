@@ -31,10 +31,13 @@ function mmapi_settings_init() {
     );
     add_settings_field('source_url', 'Data Source URL', 'source_url_field_cb', 'general',
                        'general_section');
+    add_settings_field('static_url', 'Static Data URL', 'static_url_field_cb', 'general',
+                       'general_section');
     add_settings_field('mmapi_slug', 'MMAPI Slug', 'slug_field_cb', 'general',
                        'general_section');
 
     register_setting('general', 'source_url');
+    register_setting('general', 'static_url');
     register_setting('general', 'mmapi_slug');
 }
 
@@ -47,6 +50,12 @@ function source_url_field_cb()
 {
     $url = get_option('source_url', '');
     echo "<input type=\"text\" name=\"source_url\" value=\"" . $url . "\">";
+}
+
+function static_url_field_cb()
+{
+    $url = get_option('static_url', '');
+    echo "<input type=\"text\" name=\"static_url\" value=\"" . $url . "\">";
 }
 
 function slug_field_cb()
