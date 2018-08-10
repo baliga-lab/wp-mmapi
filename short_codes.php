@@ -453,7 +453,7 @@ function regulator_survival_plot_shortcode($attr, $content=null)
     $file_headers = @get_headers($img_url);
     if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found'
         || $file_headers[0] == 'HTTP/1.1 400 Bad Request') {
-        return "<p>no survival information available</p>";
+        return "<p>no survival information available ($img_url)</p>";
     }
     else {
         return "<img src=\"" . $img_url . "\"></img>";
@@ -469,7 +469,7 @@ function bicluster_survival_plot_shortcode($attr, $content=null)
     $file_headers = @get_headers($img_url);
     if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found'
         || $file_headers[0] == 'HTTP/1.1 400 Bad Request') {
-        return "<p>no survival information available</p>";
+        return "<p>no survival information available ($img_url)</p>";
     }
     else {
         return "<img src=\"" . $img_url . "\"></img>";
