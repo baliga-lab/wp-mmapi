@@ -106,7 +106,7 @@ function bicluster_genes_table_shortcode($attr, $content=null)
                                      rawurlencode($bicluster_name));
     $entries = json_decode($result_json)->genes;
     $content = "<a name=\"genes\"></a>";
-    $content .= "<h3>Genes for bicluster " . $bicluster_name . "</h3>";
+    //$content .= "<h3>Genes for bicluster " . $bicluster_name . "</h3>";
     $content .= "<ul style=\"list-style: none\">";
     foreach ($entries as $e) {
         $content .= "  <li style=\"display: inline\"><a href=\"index.php/gene-biclusters?gene=" . $e . "\">" . $e . "</a></li>";
@@ -139,7 +139,7 @@ function bicluster_tfs_table_shortcode($attr, $content=null)
                                      rawurlencode($bicluster_name));
     $entries = json_decode($result_json)->tfs_bc;
     $content = "<a name=\"regulators\"></a>";
-    $content .= "<h3>Regulators for bicluster " . $bicluster_name . "</h3>";
+    //$content .= "<h3>Regulators for bicluster " . $bicluster_name . "</h3>";
     $content .= "<table id=\"bc_tfs\" class=\"stripe row-border\">";
     $content .= "  <thead><tr><th>Regulator</th><th>Role</th><th>Cox Hazard Ratio</th></tr></thead>";
     $content .= "  <tbody>";
@@ -166,7 +166,7 @@ function bicluster_mutation_tfs_table_shortcode($attr, $content=null)
                                      rawurlencode($bicluster_name));
     $entries = json_decode($result_json)->mutations_tfs;
     $content = "";
-    $content = "<h3>Mutations - Regulators for bicluster " . $bicluster_name . "</h3>";
+    //$content = "<h3>Mutations - Regulators for bicluster " . $bicluster_name . "</h3>";
     $content .= "<table id=\"bc_mutations_tfs\" class=\"stripe row-border\">";
     $content .= "  <thead><tr><th>Mutation</th><th>Role</th><th>Regulator</th></tr></thead>";
     $content .= "  <tbody>";
@@ -384,6 +384,12 @@ function bicluster_expressions_graph_shortcode($attr, $content)
     return $content;
 }
 
+function bicluster_name_shortcode($attr, $content)
+{
+    $bicluster_name = get_query_var('bicluster');
+    return $bicluster_name;
+}
+
 function bicluster_enrichment_graph_shortcode($attr, $content)
 {
     $bicluster_name = get_query_var('bicluster');
@@ -500,6 +506,7 @@ function mmapi_add_shortcodes()
     add_shortcode('bicluster_expressions', 'bicluster_expressions_graph_shortcode');
     add_shortcode('bicluster_enrichment', 'bicluster_enrichment_graph_shortcode');
     add_shortcode('bicluster_hallmarks', 'bicluster_hallmarks_shortcode');
+    add_shortcode('bicluster_name', 'bicluster_name_shortcode');
 
     add_shortcode('regulator_survival_plot', 'regulator_survival_plot_shortcode');
     add_shortcode('bicluster_survival_plot', 'bicluster_survival_plot_shortcode');
