@@ -81,6 +81,7 @@ function add_query_vars_filter($vars) {
     $vars[] = "mutation";
     $vars[] = "gene";
     $vars[] = "search_term";
+    $vars[] = "patient";
     return $vars;
 }
 

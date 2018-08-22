@@ -484,6 +484,51 @@ function bicluster_survival_plot_shortcode($attr, $content=null)
     }
 }
 
+function patient_info_shortcode($attr, $content=null)
+{
+    $patient_name = get_query_var('patient');
+    $source_url = get_option('source_url', '');
+    $result_json = file_get_contents($source_url . "/api/v1.0.0/patient/" .
+                                     rawurlencode($patient_name));
+    $patient_info = json_decode($result_json);
+    $content = "";
+    $content .= "<table id=\"summary1\" class=\"row-border\" style=\"margin-bottom: 10px\">";
+    $content .= "  <thead><tr><th>Progression-free Survival</th><th>Survival Status</th><th>Sex</th><th>Age</th></tr></thead>";
+    $content .= "  <tbody>";
+    $content .= "    <tr><td>$patient_info->pfs_survival</td><td>$patient_info->pfs_status</td><td>$patient_info->sex</td><td>$patient_info->age</td></tr>";
+    $content .= "  </tbody>";
+    $content .= "</table>";
+
+    return $content;
+}
+
+function patient_tf_activity_table_shortcode($attr, $content=null)
+{
+    $patient_name = get_query_var('patient');
+    $source_url = get_option('source_url', '');
+    $result_json = file_get_contents($source_url . "/api/v1.0.0/patient/" .
+                                     rawurlencode($patient_name));
+    $patient_info = json_decode($result_json);
+    $entries = $patient_info->tf_activity;
+    $content = "";
+    $content = "<h3>Regulator Activity for Patient " . $patient_name . "</h3>";
+    $content .= "<table id=\"tf_activity\" class=\"stripe row-border\">";
+    $content .= "  <thead><tr><th>Regulator</th><th>Activity</th></tr></thead>";
+    $content .= "  <tbody>";
+    foreach ($entries as $e) {
+        $content .= "    <tr><td><a href=\"index.php/regulator/?regulator=" . $e->tf . "\">" . $e->tf . "</a></td><td>$e->activity</td></tr>";
+    }
+    $content .= "  </tbody>";
+    $content .= "</table>";
+    $content .= "<script>";
+    $content .= "  jQuery(document).ready(function() {";
+    $content .= "    jQuery('#tf_activity').DataTable({";
+    $content .= "    })";
+    $content .= "  });";
+    $content .= "</script>";
+    return $content;
+}
+
 function mmapi_add_shortcodes()
 {
     add_shortcode('summary', 'summary_shortcode');
@@ -510,6 +555,9 @@ function mmapi_add_shortcodes()
 
     add_shortcode('regulator_survival_plot', 'regulator_survival_plot_shortcode');
     add_shortcode('bicluster_survival_plot', 'bicluster_survival_plot_shortcode');
+
+    add_shortcode('patient_info', 'patient_info_shortcode');
+    add_shortcode('patient_tf_activity_table', 'patient_tf_activity_table_shortcode');
 }
 
 ?>
