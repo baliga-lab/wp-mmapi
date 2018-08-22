@@ -492,12 +492,22 @@ function patient_info_shortcode($attr, $content=null)
                                      rawurlencode($patient_name));
     $patient_info = json_decode($result_json);
     $content = "";
-    $content .= "<table id=\"summary1\" class=\"row-border\" style=\"margin-bottom: 10px\">";
+    $content .= "<table id=\"summary\" class=\"row-border\" style=\"margin-bottom: 10px\">";
     $content .= "  <thead><tr><th>Progression-free Survival</th><th>Survival Status</th><th>Sex</th><th>Age</th></tr></thead>";
     $content .= "  <tbody>";
     $content .= "    <tr><td>$patient_info->pfs_survival</td><td>$patient_info->pfs_status</td><td>$patient_info->sex</td><td>$patient_info->age</td></tr>";
     $content .= "  </tbody>";
     $content .= "</table>";
+    $content .= "<script>";
+    $content .= "  jQuery(document).ready(function() {";
+
+    $content .= "    jQuery('#summary').DataTable({";
+    $content .= "      'paging': false,";
+    $content .= "      'info': false,";
+    $content .= "      'searching': false";
+    $content .= "    });";
+    $content .= "  });";
+    $content .= "</script>";
 
     return $content;
 }
