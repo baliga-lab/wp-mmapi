@@ -270,6 +270,9 @@ function gene_info_shortcode($attr, $content=null)
     $content .= "<h3>" . $gene_info->preferred . " - " . $desc;
     $content .= "</h3>";
     $content .= "<table>";
+    $content .= "  <thead>";
+    $content .= "    <tr><th>Entrez ID</th><th>EnsEMBL ID</th><th>Preferred Name</th><th>Uniprot ID</th></tr>";
+    $content .= "  </thead>";
     $content .= "  <tbody>";
     $content .= "    <tr>";
     $content .= "      <td><a href=\"https://www.ncbi.nlm.nih.gov/gene/?term=" . $gene_info->entrez_id . "\" target=\"_blank\">" . $gene_info->entrez_id . "</a></td>";
@@ -277,7 +280,7 @@ function gene_info_shortcode($attr, $content=null)
     $content .= "      <td>" . $gene_info->preferred . "</td>";
     $content .= "      <td><a href=\"https://www.uniprot.org/uniprot/" . $gene_info->uniprot_id . "\" target=\"_blank\">" . $gene_info->uniprot_id . "</a></td>";
     $content .= "    </tr></tr>";
-    $content .= "      <td colspan=\"4\">" . $gene_info->function . "</td>";
+    $content .= "      <td colspan=\"4\"><b>Function:</b> " . $gene_info->function . "</td>";
     $content .= "    </tr>";
     $content .= "  </tbody>";
     $content .= "</table>";
