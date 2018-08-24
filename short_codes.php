@@ -258,14 +258,16 @@ function gene_biclusters_table_shortcode($attr, $content=null)
     return $content;
 }
 
-function gene_info_shortcode($attr, $content=null)
+function gene_info_table($gene_name)
 {
-    $gene_name = get_query_var('gene');
     $source_url = get_option('source_url', '');
     $result_json = file_get_contents($source_url . "/api/v1.0.0/gene_info/" .
                                      rawurlencode($gene_name));
     $gene_info = json_decode($result_json);
     $content = "";
+    if ($gene_info->preferred == 'NA') {
+        return $content;
+    }
     $desc = preg_replace('/\[.*\]/', '', $gene_info->description);
     $content .= "<h3>" . $gene_info->preferred . " - " . $desc;
     $content .= "</h3>";
@@ -295,6 +297,16 @@ function gene_info_shortcode($attr, $content=null)
     */
     $content .= "";
     return $content;
+}
+
+function gene_info_shortcode($attr, $content=null)
+{
+    return gene_info_table(get_query_var('gene'));
+}
+
+function regulator_info_shortcode($attr, $content=null)
+{
+    return gene_info_table(get_query_var('regulator'));
 }
 
 function gene_uniprot_shortcode($attr, $content=null)
@@ -556,6 +568,7 @@ function mmapi_add_shortcodes()
 
     add_shortcode('gene_biclusters_table', 'gene_biclusters_table_shortcode');
     add_shortcode('gene_info', 'gene_info_shortcode');
+    add_shortcode('regulator_info', 'regulator_info_shortcode');
     add_shortcode('gene_uniprot', 'gene_uniprot_shortcode');
     add_shortcode('bicluster_cytoscape', 'bicluster_cytoscape_shortcode');
     add_shortcode('bicluster_summary', 'bicluster_summary_shortcode');
