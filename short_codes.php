@@ -112,22 +112,6 @@ function bicluster_genes_table_shortcode($attr, $content=null)
         $content .= "  <li style=\"display: inline\"><a href=\"index.php/gene-biclusters?gene=" . $e . "\">" . $e . "</a></li>";
     }
     $content .= "</ul>";
-    /*
-    $content .= "<table id=\"bc_genes\" class=\"stripe row-border\">";
-    $content .= "  <thead><tr><th>Gene</th></tr></thead>";
-    $content .= "  <tbody>";
-    foreach ($entries as $e) {
-        $content .= "    <tr><td><a href=\"index.php/gene-biclusters?gene=" . $e . "\">" . $e . "</a></td></tr>";
-    }
-    $content .= "  </tbody>";
-    $content .= "</table>";
-    $content .= "<script>";
-    $content .= "  jQuery(document).ready(function() {";
-    $content .= "    jQuery('#bc_genes').DataTable({";
-    $content .= "    })";
-    $content .= "  });";
-    $content .= "</script>";
-    */
     return $content;
 }
 
@@ -256,7 +240,7 @@ function gene_biclusters_table_shortcode($attr, $content=null)
                                      rawurlencode($gene_name));
     $entries = json_decode($result_json)->biclusters;
     $content = "";
-    $content = "<h3>Biclusters for gene " . $gene_name . "</h3>";
+    //$content = "<h3>Biclusters for gene " . $gene_name . "</h3>";
     $content .= "<table id=\"biclusters\" class=\"stripe row-border\">";
     $content .= "  <thead><tr><th>Bicluster</th><th>Survival (Hazard Ratio)</th></tr></thead>";
     $content .= "  <tbody>";
@@ -304,7 +288,7 @@ function gene_uniprot_shortcode($attr, $content=null)
                                      rawurlencode($gene_name));
     $gene_info = json_decode($result_json);
     $content = "";
-    $content .= "<h3>UniProtKB " . $gene_info->uniprot_id . "</h3>";
+    //$content .= "<h3>UniProtKB " . $gene_info->uniprot_id . "</h3>";
     $content .= "<div id=\"uniprot-viewer\"></div>";
     $content .= "  <script>";
     $content .= "    window.onload = function() {";
