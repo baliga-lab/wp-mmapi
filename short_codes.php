@@ -269,6 +269,19 @@ function gene_info_shortcode($attr, $content=null)
     $desc = preg_replace('/\[.*\]/', '', $gene_info->description);
     $content .= "<h3>" . $gene_info->preferred . " - " . $desc;
     $content .= "</h3>";
+    $content .= "<table>";
+    $content .= "  <tbody>";
+    $content .= "    <tr>";
+    $content .= "      <td><a href=\"https://www.ncbi.nlm.nih.gov/gene/?term=" . $gene_info->entrez_id . "\" target=\"_blank\">" . $gene_info->entrez_id . "</a></td>";
+    $content .= "      <td><a href=\"http://www.ensembl.org/id/" . $gene_info->ensembl_id . "\" target=\"_blank\">" . $gene_info->ensembl_id . "</a></td>";
+    $content .= "      <td>" . $gene_info->preferred . "</td>";
+    $content .= "      <td><a href=\"https://www.uniprot.org/uniprot/" . $gene_info->uniprot_id . "\" target=\"_blank\">" . $gene_info->uniprot_id . "</a></td>";
+    $content .= "    </tr></tr>";
+    $content .= "      <td colspan=\"4\">" . $gene_info->function . "</td>";
+    $content .= "    </tr>";
+    $content .= "  </tbody>";
+    $content .= "</table>";
+    /*
     $content .= "<div><span class=\"entry-title\">Entrez ID: </span><span><a href=\"https://www.ncbi.nlm.nih.gov/gene/?term=" . $gene_info->entrez_id . "\" target=\"_blank\">" . $gene_info->entrez_id . "</a></span></div>";
     $content .= "<div><span class=\"entry-title\">Ensembl ID: </span><span><a href=\"http://www.ensembl.org/id/" . $gene_info->ensembl_id . "\" target=\"_blank\">" . $gene_info->ensembl_id . "</a></span></div>";
     $content .= "<div><span class=\"entry-title\">Preferred Name: </span><span>" . $gene_info->preferred . "</span></div>";
@@ -276,6 +289,7 @@ function gene_info_shortcode($attr, $content=null)
 
     $content .= "<div><span class=\"entry-title\">UniProt ID: </span><span><a href=\"https://www.uniprot.org/uniprot/" . $gene_info->uniprot_id . "\" target=\"_blank\">" . $gene_info->uniprot_id . "</a></span></div>";
     $content .= "<div><span class=\"entry-title\">Function: </span><span>" . $gene_info->function . "</span></div>";
+    */
     $content .= "";
     return $content;
 }
