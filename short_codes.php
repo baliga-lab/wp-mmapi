@@ -552,6 +552,35 @@ function patient_tf_activity_table_shortcode($attr, $content=null)
     return $content;
 }
 
+
+function causal_flow_table_shortcode($attr, $content=null)
+{
+    $source_url = get_option('source_url', '');
+    $result_json = file_get_contents($source_url . "/api/v1.0.0/causal_flow");
+    $entries = json_decode($result_json)->entries;
+    $content = "";
+    $content .= "<table id=\"causal_flow\" class=\"stripe row-border\">";
+    $content .= "  <thead><tr><th>Mutation</th><th>Role</th><th>Regulator</th><th>Role</th><th>Bicluster</th><th>Hazard Ratio</th><th># bicluster genes</th></tr></thead>";
+    $content .= "  <tbody>";
+    foreach ($entries as $e) {
+        $content .= "    <tr><td>$e->mutation</td><td>$e->mutation_role</td>";
+        $content .= "<td>$e->regulator</td><td>$e->regulator_role</td><td>$e->bicluster</td>";
+        $content .= "<td>$e->hazard_ratio</td>";
+        $content .= "<td><a href=\"index.php/bicluster/?bicluster=$e->bicluster#genes\">$e->num_genes</a></td>";
+        $content .= "</tr>";
+    }
+    $content .= "  </tbody>";
+    $content .= "</table>";
+    $content .= "<script>";
+    $content .= "  jQuery(document).ready(function() {";
+    $content .= "    jQuery('#causal_flow').DataTable({";
+    $content .= "    })";
+    $content .= "  });";
+    $content .= "</script>";
+    return $content;
+}
+
+
 function mmapi_add_shortcodes()
 {
     add_shortcode('summary', 'summary_shortcode');
@@ -582,6 +611,8 @@ function mmapi_add_shortcodes()
 
     add_shortcode('patient_info', 'patient_info_shortcode');
     add_shortcode('patient_tf_activity_table', 'patient_tf_activity_table_shortcode');
+
+    add_shortcode('causal_flow_table', 'causal_flow_table_shortcode');
 }
 
 ?>
