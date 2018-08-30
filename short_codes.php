@@ -563,8 +563,8 @@ function causal_flow_table_shortcode($attr, $content=null)
     $content .= "  <thead><tr><th>Mutation</th><th>Role</th><th>Regulator</th><th>Role</th><th>Bicluster</th><th>Hazard Ratio</th><th># bicluster genes</th></tr></thead>";
     $content .= "  <tbody>";
     foreach ($entries as $e) {
-        $content .= "    <tr><td>$e->mutation</td><td>$e->mutation_role</td>";
-        $content .= "<td>$e->regulator</td><td>$e->regulator_role</td><td>$e->bicluster</td>";
+        $content .= "    <tr><td><a href=\"index.php/mutation/?mutation=$e->mutation\">$e->mutation</a></td><td>$e->mutation_role</td>";
+        $content .= "<td><a href=\"index.php/regulator/?regulator=$e->regulator\">$e->regulator</a></td><td>$e->regulator_role</td><td><a href=\"index.php/bicluster/?bicluster=$e->bicluster\">$e->bicluster</a></td>";
         $content .= "<td>$e->hazard_ratio</td>";
         $content .= "<td><a href=\"index.php/bicluster/?bicluster=$e->bicluster#genes\">$e->num_genes</a></td>";
         $content .= "</tr>";
