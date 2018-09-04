@@ -9,3 +9,9 @@ table {
     height: 200px;
     display: block;
 }
+
+#cytoscape2 {
+    width: 800px;
+    height: 800px;
+    display: block;
+}

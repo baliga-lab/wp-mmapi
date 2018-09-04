@@ -97,6 +97,7 @@ function mmapi_init()
 
     wp_register_script('uniprot_viewer', 'http://ebi-uniprot.github.io/CDN/protvista/protvista.js');
     wp_enqueue_script('uniprot_viewer');
+
     wp_enqueue_script('jquery-ui-autocomplete');
     wp_enqueue_script('d3', plugin_dir_url(__FILE__) . 'js/d3.min.js', array('jquery'));
     wp_enqueue_script('datatables', plugin_dir_url(__FILE__) . 'js/jquery.dataTables.min.js', array('jquery'));
@@ -106,6 +107,7 @@ function mmapi_init()
     wp_enqueue_script('cytoscape', plugin_dir_url(__FILE__) . 'js/cytoscape.min.js');
     wp_enqueue_script('dagre', plugin_dir_url(__FILE__) . 'js/dagre.min.js');
     wp_enqueue_script('cytoscape-dagre', plugin_dir_url(__FILE__) . 'js/cytoscape-dagre.js');
+    wp_enqueue_script('cytoscape-cose-bilkent', plugin_dir_url(__FILE__) . 'js/cytoscape-cose-bilkent.js');
 
     mmapi_add_shortcodes();
     mmapi_ajax_source_init();

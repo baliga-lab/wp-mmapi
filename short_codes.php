@@ -580,6 +580,31 @@ function causal_flow_table_shortcode($attr, $content=null)
     return $content;
 }
 
+function causal_flow_cytoscape_shortcode($attr, $content)
+{
+    $static_url = get_option('static_url', '');
+    $result_json = file_get_contents($static_url . "/mm_cytoscape.json");
+    $content = "";
+    $content .= "<div id=\"cytoscape2\"></div>";
+    $content .= "<script>";
+    $content .= "  jQuery(document).ready(function() {";
+    $content .= "    var cy = cytoscape({";
+    $content .= "      container: jQuery('#cytoscape2'),";
+    $content .= "      style: [";
+    $content .= "        { selector: 'node', style: { label: 'data(name)'}},";
+    $content .= "        { selector: 'edge', style: { 'line-color': '#000'}},";
+    $content .= "        { selector: '.bicluster', style: { 'background-color': 'red', 'shape': 'square'}},";
+    $content .= "        { selector: '.tf', style: { 'background-color': 'blue', 'shape': 'triangle'}},";
+    $content .= "        { selector: '.mutation', style: { 'background-color': 'green', 'shape': 'diamond'}}";
+    $content .= "      ],";
+    $content .= "      layout: { name: 'cose-bilkent' },";
+    $content .= "      elements: " . json_encode(json_decode($result_json));
+    $content .= "    });";
+    $content .= "  });";
+    $content .= "</script>";
+    return $content;
+}
+
 
 function mmapi_add_shortcodes()
 {
@@ -613,6 +638,7 @@ function mmapi_add_shortcodes()
     add_shortcode('patient_tf_activity_table', 'patient_tf_activity_table_shortcode');
 
     add_shortcode('causal_flow_table', 'causal_flow_table_shortcode');
+    add_shortcode('causal_flow_cytoscape', 'causal_flow_cytoscape_shortcode');
 }
 
 ?>
