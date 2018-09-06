@@ -600,6 +600,18 @@ function causal_flow_cytoscape_shortcode($attr, $content)
     $content .= "      layout: { name: 'cose-bilkent' },";
     $content .= "      elements: " . json_encode(json_decode($result_json));
     $content .= "    });";
+    $content .= "    cy.on('tap', '.bicluster', function (e) {";
+    $content .= "      var bcName = this.data('name');";
+    $content .= "      window.location.href = 'index.php/bicluster/?bicluster=' + bcName;";
+    $content .= "    });";
+    $content .= "    cy.on('tap', '.mutation', function (e) {";
+    $content .= "      var mutName = this.data('name');";
+    $content .= "      window.location.href = 'index.php/mutation/?mutation=' + mutName;";
+    $content .= "    });";
+    $content .= "    cy.on('tap', '.tf', function (e) {";
+    $content .= "      var tfName = this.data('name');";
+    $content .= "      window.location.href = 'index.php/regulator/?regulator=' + tfName;";
+    $content .= "    });";
     $content .= "  });";
     $content .= "</script>";
     return $content;
