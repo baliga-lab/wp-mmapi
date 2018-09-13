@@ -372,7 +372,7 @@ function bicluster_expressions_graph_shortcode($attr, $content)
     $content .= "    function makeBiclusterExpChart(data) {";
     $content .= "      var x, chart = Highcharts.chart('bicluster_exps', {\n";
     $content .= "        chart: { type: 'boxplot' },";
-    $content .= "        title: { text: 'Bicluster Expressions' },\n";
+    $content .= "        title: { text: 'Bicluster Expression' },\n";
     $content .= "        xAxis: { title: { text: 'Conditions' }},\n";
     $content .= "        yAxis: { title: { text: 'Relative expression'} },\n";
     $content .= "        series: [{name: 'All', showInLegend: false, colorByPoint: true, data: data.data}]\n";
@@ -447,17 +447,16 @@ function bicluster_hallmarks_shortcode($attr, $content)
 {
     $content = "";
     $content = "<a name=\"hallmarks\"></a>";
-    $content .= "<h3>Hallmarks</h3>";
     $content .= "<div style=\"width:100%\">";
-    $content .= "<div style=\"width: 50%; display: inline-block; vertical-align: top\">";
-    $content .= "  <h4>Enriched Hallmarks</h4>";
+    $content .= "<div style=\"width: 45%; display: inline-block; vertical-align: top\">";
+    $content .= "  <b>Bicluster is enriched for the following hallmarks of cancer</b>";
     $content .= "  <ul style=\"list-style: none\">";
     $content .= "    <li><img style=\"width: 20px\" src=\"" . esc_url(plugins_url('images/angiogenesis.gif', __FILE__)). "\"> Inducing angiogenesis</li>";
     $content .= "  </ul>";
 
     $content .= "</div>";
     $content .= "<div style=\"width: 50%; display: inline-block\">";
-    $content .= "  <h4>Legend</h4>>";
+    $content .= "  <h4>Legend</h4>";
     $content .= "  <img src=\"" . esc_url(plugins_url('images/legend.jpg', __FILE__)). "\">";
     $content .= "</div>";
     $content .= "</div>";
@@ -474,7 +473,7 @@ function regulator_survival_plot_shortcode($attr, $content=null)
     $file_headers = @get_headers($img_url);
     if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found'
         || $file_headers[0] == 'HTTP/1.1 400 Bad Request') {
-        return "<p>no survival information available ($img_url)</p>";
+        return "<p>no survival information available</p>";
     }
     else {
         return "<img src=\"" . $img_url . "\"></img>";
@@ -490,7 +489,7 @@ function bicluster_survival_plot_shortcode($attr, $content=null)
     $file_headers = @get_headers($img_url);
     if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found'
         || $file_headers[0] == 'HTTP/1.1 400 Bad Request') {
-        return "<p>no survival information available ($img_url)</p>";
+        return "<p>no survival information available</p>";
     }
     else {
         return "<img src=\"" . $img_url . "\"></img>";
@@ -592,7 +591,12 @@ function causal_flow_cytoscape_shortcode($attr, $content)
     $content .= "      container: jQuery('#cytoscape2'),";
     $content .= "      style: [";
     $content .= "        { selector: 'node', style: { label: 'data(name)'}},";
-    $content .= "        { selector: 'edge', style: { 'line-color': '#000'}},";
+    $content .= "        { selector: 'edge', style: { 'line-color': '#000', 'width': 3, 'opacity': 0.5}},";
+    $content .= "        { selector: '.activates', style: { 'line-color': 'green', 'opacity': 0.5}},";
+    $content .= "        { selector: '.represses', style: { 'line-color': 'red', 'opacity': 0.5}},";
+    $content .= "        { selector: '.up_regulates', style: { 'line-color': 'green', 'opacity': 0.5}},";
+    $content .= "        { selector: '.down_regulates', style: { 'line-color': 'red', 'opacity': 0.5}},";
+
     $content .= "        { selector: '.bicluster', style: { 'background-color': 'red', 'shape': 'square'}},";
     $content .= "        { selector: '.tf', style: { 'background-color': 'blue', 'shape': 'triangle'}},";
     $content .= "        { selector: '.mutation', style: { 'background-color': 'green', 'shape': 'diamond'}}";
