@@ -342,23 +342,15 @@ function bicluster_summary_shortcode($attr, $content)
     $result = json_decode($result_json);
     $num_genes = count($result->genes);
     $num_regulators = count($result->tfs_bc);
-    $num_patients = 0;
-    $num_hallmarks = 1;
 
     $content = "";
     $content .= "<table id=\"summary1\" class=\"row-border\" style=\"margin-bottom: 10px\">";
-    $content .= "  <thead><tr><th>Genes</th><th>Patient Tumors</th><th>FPC Var.Exp.<br>(Perm. p-value)</th><th>Survival<br>(Cox Hazard Ratio)</th><th>Independent Replication</th></tr></thead>";
+    $content .= "  <thead><tr><th>Genes</th><th>Survival<br>(Cox Hazard Ratio)</th><th>Regulators</th><th>Causal Flows</th></tr></thead>";
     $content .= "  <tbody>";
-    $content .= "    <tr><td><a href=\"#genes\">$num_genes</a></td><td><a href=\"#patients\">$num_patients</a></td><td>-</td><td>$result->hazard_ratio</td><td>-</td></tr>";
+    $content .= "    <tr><td><a href=\"#genes\">$num_genes</a></td><td>$result->hazard_ratio</td><td><a href=\"#regulators\">$num_regulators</a></td><td>$result->num_causal_flows</td></tr>";
     $content .= "  </tbody>";
     $content .= "</table>";
 
-    $content .= "<table id=\"summary2\" class=\"row-border\" style=\"margin-bottom: 10px\">";
-    $content .= "  <thead><tr><th>Regulators</th><th>Causal Flows</th><th>Enriched GO BPs</th><th>Enriched<br>Hallmarks of Cancer</th></tr></thead>";
-    $content .= "  <tbody>";
-    $content .= "    <tr><td><a href=\"#regulators\">$num_regulators</a></td><td>-</td><td>-</td><td><a href=\"#hallmarks\">$num_hallmarks</a></td></tr>";
-    $content .= "  </tbody>";
-    $content .= "</table>";
     return $content;
 }
 
