@@ -15,3 +15,9 @@ table {
     height: 800px;
     display: block;
 }
+
+#cytoscape_mutation {
+    width: 600px;
+    height: 400px;
+    display: block;
+}

@@ -619,11 +619,11 @@ function causal_flow_mutation_cytoscape_shortcode($attr, $content)
     $static_url = get_option('static_url', '');
     $result_json = file_get_contents($static_url . "/cytoscape/mutations/" . $mutation_name . ".json");
     $content = "";
-    $content .= "<div id=\"cytoscape2\"></div>";
+    $content .= "<div id=\"cytoscape_mutation\"></div>";
     $content .= "<script>";
     $content .= "  jQuery(document).ready(function() {";
     $content .= "    var cy = cytoscape({";
-    $content .= "      container: jQuery('#cytoscape2'),";
+    $content .= "      container: jQuery('#cytoscape_mutation'),";
     $content .= "      style: [";
     $content .= "        { selector: 'node', style: { label: 'data(name)'}},";
     $content .= "        { selector: 'edge', style: { 'line-color': '#000', 'width': 3, 'opacity': 0.5}},";
