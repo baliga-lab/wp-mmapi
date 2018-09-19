@@ -613,6 +613,91 @@ function causal_flow_cytoscape_shortcode($attr, $content)
     return $content;
 }
 
+function causal_flow_mutation_cytoscape_shortcode($attr, $content)
+{
+    $mutation_name = get_query_var('mutation');
+    $static_url = get_option('static_url', '');
+    $result_json = file_get_contents($static_url . "/cytoscape/mutations/" . $mutation_name . ".json");
+    $content = "";
+    $content .= "<div id=\"cytoscape2\"></div>";
+    $content .= "<script>";
+    $content .= "  jQuery(document).ready(function() {";
+    $content .= "    var cy = cytoscape({";
+    $content .= "      container: jQuery('#cytoscape2'),";
+    $content .= "      style: [";
+    $content .= "        { selector: 'node', style: { label: 'data(name)'}},";
+    $content .= "        { selector: 'edge', style: { 'line-color': '#000', 'width': 3, 'opacity': 0.5}},";
+    $content .= "        { selector: '.activates', style: { 'line-color': 'green', 'opacity': 0.5}},";
+    $content .= "        { selector: '.represses', style: { 'line-color': 'red', 'opacity': 0.5}},";
+    $content .= "        { selector: '.up_regulates', style: { 'line-color': 'green', 'opacity': 0.5}},";
+    $content .= "        { selector: '.down_regulates', style: { 'line-color': 'red', 'opacity': 0.5}},";
+
+    $content .= "        { selector: '.bicluster', style: { 'background-color': 'red', 'shape': 'square'}},";
+    $content .= "        { selector: '.tf', style: { 'background-color': 'blue', 'shape': 'triangle'}},";
+    $content .= "        { selector: '.mutation', style: { 'background-color': 'green', 'shape': 'diamond'}}";
+    $content .= "      ],";
+    $content .= "      layout: { name: 'cose-bilkent' },";
+    $content .= "      elements: " . json_encode(json_decode($result_json));
+    $content .= "    });";
+    $content .= "    cy.on('tap', '.bicluster', function (e) {";
+    $content .= "      var bcName = this.data('name');";
+    $content .= "      window.location.href = 'index.php/bicluster/?bicluster=' + bcName;";
+    $content .= "    });";
+    $content .= "    cy.on('tap', '.mutation', function (e) {";
+    $content .= "      var mutName = this.data('name');";
+    $content .= "      window.location.href = 'index.php/mutation/?mutation=' + mutName;";
+    $content .= "    });";
+    $content .= "    cy.on('tap', '.tf', function (e) {";
+    $content .= "      var tfName = this.data('name');";
+    $content .= "      window.location.href = 'index.php/regulator/?regulator=' + tfName;";
+    $content .= "    });";
+    $content .= "  });";
+    $content .= "</script>";
+    return $content;
+}
+
+function causal_flow_regulator_cytoscape_shortcode($attr, $content)
+{
+    $regulator_name = get_query_var('regulator');
+    $static_url = get_option('static_url', '');
+    $result_json = file_get_contents($static_url . "/cytoscape/regulators/" . $regulator_name . ".json");
+    $content = "";
+    $content .= "<div id=\"cytoscape\"></div>";
+    $content .= "<script>";
+    $content .= "  jQuery(document).ready(function() {";
+    $content .= "    var cy = cytoscape({";
+    $content .= "      container: jQuery('#cytoscape'),";
+    $content .= "      style: [";
+    $content .= "        { selector: 'node', style: { label: 'data(name)'}},";
+    $content .= "        { selector: 'edge', style: { 'line-color': '#000', 'width': 3, 'opacity': 0.5}},";
+    $content .= "        { selector: '.activates', style: { 'line-color': 'green', 'opacity': 0.5}},";
+    $content .= "        { selector: '.represses', style: { 'line-color': 'red', 'opacity': 0.5}},";
+    $content .= "        { selector: '.up_regulates', style: { 'line-color': 'green', 'opacity': 0.5}},";
+    $content .= "        { selector: '.down_regulates', style: { 'line-color': 'red', 'opacity': 0.5}},";
+
+    $content .= "        { selector: '.bicluster', style: { 'background-color': 'red', 'shape': 'square'}},";
+    $content .= "        { selector: '.tf', style: { 'background-color': 'blue', 'shape': 'triangle'}},";
+    $content .= "        { selector: '.mutation', style: { 'background-color': 'green', 'shape': 'diamond'}}";
+    $content .= "      ],";
+    $content .= "      layout: { name: 'cose-bilkent' },";
+    $content .= "      elements: " . json_encode(json_decode($result_json));
+    $content .= "    });";
+    $content .= "    cy.on('tap', '.bicluster', function (e) {";
+    $content .= "      var bcName = this.data('name');";
+    $content .= "      window.location.href = 'index.php/bicluster/?bicluster=' + bcName;";
+    $content .= "    });";
+    $content .= "    cy.on('tap', '.mutation', function (e) {";
+    $content .= "      var mutName = this.data('name');";
+    $content .= "      window.location.href = 'index.php/mutation/?mutation=' + mutName;";
+    $content .= "    });";
+    $content .= "    cy.on('tap', '.tf', function (e) {";
+    $content .= "      var tfName = this.data('name');";
+    $content .= "      window.location.href = 'index.php/regulator/?regulator=' + tfName;";
+    $content .= "    });";
+    $content .= "  });";
+    $content .= "</script>";
+    return $content;
+}
 
 function mmapi_add_shortcodes()
 {
@@ -647,6 +732,8 @@ function mmapi_add_shortcodes()
 
     add_shortcode('causal_flow_table', 'causal_flow_table_shortcode');
     add_shortcode('causal_flow_cytoscape', 'causal_flow_cytoscape_shortcode');
+    add_shortcode('causal_flow_mutation_cytoscape', 'causal_flow_mutation_cytoscape_shortcode');
+    add_shortcode('causal_flow_regulator_cytoscape', 'causal_flow_regulator_cytoscape_shortcode');
 }
 
 ?>
