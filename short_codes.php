@@ -72,10 +72,10 @@ function regulator_table_shortcode($attr, $content=null)
     $content = "";
     $content = "<h3>Biclusters for regulator " . $regulator_name . "</h3>";
     $content .= "<table id=\"biclusters\" class=\"stripe row-border\">";
-    $content .= "  <thead><tr><th>Regulator</th><th>Role</th><th>Bicluster</th><th>Cox Hazard Ratio</th></tr></thead>";
+    $content .= "  <thead><tr><th>Mutation</th><th>Regulator</th><th>Role</th><th>Bicluster</th><th>Cox Hazard Ratio</th></tr></thead>";
     $content .= "  <tbody>";
     foreach ($entries as $e) {
-        $content .= "    <tr><td>$regulator_name</td><td>" . $e->role . "</td><td><a href=\"index.php/bicluster/?bicluster=" . $e->bicluster . "\">" .
+        $content .= "    <tr><td>$e->mutation</td><td>$regulator_name</td><td>" . $e->role . "</td><td><a href=\"index.php/bicluster/?bicluster=" . $e->bicluster . "\">" .
                  $e->bicluster . "</a></td><td>" . $e->hazard_ratio  . "</td></tr>";
     }
     $content .= "  </tbody>";
