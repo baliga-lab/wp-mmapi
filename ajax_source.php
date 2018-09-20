@@ -16,7 +16,7 @@ function bicluster_exps_dt_callback() {
     header("Content-type: application/json");
     $bicluster = $_GET['bicluster'];
     $source_url = get_option('source_url', '');
-    $exps_json = file_get_contents($source_url . "/api/v1.0.0/bicluster_expressions/" . $bicluster);
+    $exps_json = file_get_contents($source_url . "/api/v1.0.0/bicluster_expressions/" . rawurlencode($bicluster));
     $exps = json_decode($exps_json);
     $data = json_encode($exps->data);
     $doc = <<<EOT
@@ -32,7 +32,7 @@ function bicluster_enrichment_dt_callback() {
     header("Content-type: application/json");
     $bicluster = $_GET['bicluster'];
     $source_url = get_option('source_url', '');
-    $exps_json = file_get_contents($source_url . "/api/v1.0.0/bicluster_enrichment/" . $bicluster);
+    $exps_json = file_get_contents($source_url . "/api/v1.0.0/bicluster_enrichment/" . rawurlencode($bicluster));
     $exps = json_decode($exps_json);
     $conditions = json_encode($exps->conditions);
     $expdata = array();

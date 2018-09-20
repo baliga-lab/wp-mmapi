@@ -48,7 +48,7 @@ function mutation_table_shortcode($attr, $content=null)
     $content .= "  <thead><tr><th>Regulator</th><th>Role</th><th>Bicluster</th><th>Cox Hazard Ratio (Bicluster)</th></tr></thead>";
     $content .= "  <tbody>";
     foreach ($entries as $e) {
-        $content .= "    <tr><td><a href=\"index.php/regulator/?regulator=" . $e->regulator . "\">" . $e->regulator . "</a></td><td>" . $e->role . "</td><td><a href=\"index.php/bicluster/?bicluster=" . $e->bicluster . "\">" . $e->bicluster . "</a></td><td>$e->bc_cox_hazard_ratio</td></tr>";
+        $content .= "    <tr><td><a href=\"index.php/regulator/?regulator=" . $e->regulator . "\">" . $e->regulator . "</a></td><td class=\"$e->role\">" . $e->role . "</td><td><a href=\"index.php/bicluster/?bicluster=" . $e->bicluster . "\">" . $e->bicluster . "</a></td><td>$e->bc_cox_hazard_ratio</td></tr>";
     }
     $content .= "  </tbody>";
     $content .= "</table>";
@@ -75,7 +75,7 @@ function regulator_table_shortcode($attr, $content=null)
     $content .= "  <thead><tr><th>Mutation</th><th>Regulator</th><th>Role</th><th>Bicluster</th><th>Cox Hazard Ratio</th></tr></thead>";
     $content .= "  <tbody>";
     foreach ($entries as $e) {
-        $content .= "    <tr><td>$e->mutation</td><td>$regulator_name</td><td>" . $e->role . "</td><td><a href=\"index.php/bicluster/?bicluster=" . $e->bicluster . "\">" .
+        $content .= "    <tr><td>$e->mutation</td><td>$regulator_name</td><td class=\"$e->role\">" . $e->role . "</td><td><a href=\"index.php/bicluster/?bicluster=" . $e->bicluster . "\">" .
                  $e->bicluster . "</a></td><td>" . $e->hazard_ratio  . "</td></tr>";
     }
     $content .= "  </tbody>";

@@ -21,3 +21,10 @@ table {
     height: 400px;
     display: block;
 }
+
+.up-regulates, .activates {
+    color: green;
+}
+.down-regulates, .represses {
+    color: red;
+}
