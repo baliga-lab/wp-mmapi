@@ -636,7 +636,7 @@ function causal_flow_mutation_cytoscape_shortcode($attr, $content)
     $content .= "        { selector: '.tf', style: { 'background-color': 'blue', 'shape': 'triangle'}},";
     $content .= "        { selector: '.mutation', style: { 'background-color': 'green', 'shape': 'diamond'}}";
     $content .= "      ],";
-    $content .= "      layout: { name: 'cose-bilkent' },";
+    $content .= "      layout: { name: 'dagre' },";
     $content .= "      elements: " . json_encode(json_decode($result_json));
     $content .= "    });";
     $content .= "    cy.on('tap', '.bicluster', function (e) {";
@@ -679,7 +679,7 @@ function causal_flow_regulator_cytoscape_shortcode($attr, $content)
     $content .= "        { selector: '.tf', style: { 'background-color': 'blue', 'shape': 'triangle'}},";
     $content .= "        { selector: '.mutation', style: { 'background-color': 'green', 'shape': 'diamond'}}";
     $content .= "      ],";
-    $content .= "      layout: { name: 'cose-bilkent' },";
+    $content .= "      layout: { name: 'dagre' },";
     $content .= "      elements: " . json_encode(json_decode($result_json));
     $content .= "    });";
     $content .= "    cy.on('tap', '.bicluster', function (e) {";
