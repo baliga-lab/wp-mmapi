@@ -168,6 +168,30 @@ function bicluster_mutation_tfs_table_shortcode($attr, $content=null)
     return $content;
 }
 
+function bicluster_patients_table_shortcode($attr, $content=null)
+{
+    $bicluster_name = get_query_var('bicluster');
+    $source_url = get_option('source_url', '');
+    $result_json = file_get_contents($source_url . "/api/v1.0.0/bicluster_patients/" .
+                                     rawurlencode($bicluster_name));
+    $entries = json_decode($result_json)->data;
+    $content .= "<table id=\"bc_patients\" class=\"stripe row-border\">";
+    $content .= "  <thead><tr><th>Patient</th><th>Survival</th><th>Survival Status</th><th>Sex</th><th>Age</th></tr></thead>";
+    $content .= "  <tbody>";
+    foreach ($entries as $e) {
+        $content .= "    <tr><td>$e->name</td><td>$e->survival</td><td>$e->survival_status</td><td>$e->sex</td><td>$e->age</td></tr>";
+    }
+    $content .= "  </tbody>";
+    $content .= "</table>";
+    $content .= "<script>";
+    $content .= "  jQuery(document).ready(function() {";
+    $content .= "    jQuery('#bc_patients').DataTable({";
+    $content .= "    })";
+    $content .= "  });";
+    $content .= "</script>";
+    return $content;
+}
+
 
 function search_box_shortcode($attr, $content)
 {
@@ -707,6 +731,7 @@ function mmapi_add_shortcodes()
 
     // bicluster page short codes
     add_shortcode('bicluster_genes_table', 'bicluster_genes_table_shortcode');
+    add_shortcode('bicluster_patients_table', 'bicluster_patients_table_shortcode');
     add_shortcode('bicluster_tfs_table', 'bicluster_tfs_table_shortcode');
     add_shortcode('bicluster_mutation_tfs_table', 'bicluster_mutation_tfs_table_shortcode');
 
