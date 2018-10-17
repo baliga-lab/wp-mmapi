@@ -723,6 +723,112 @@ function causal_flow_regulator_cytoscape_shortcode($attr, $content)
     return $content;
 }
 
+function bc_patient_survhisto_shortcode($attr, $content)
+{
+    $bicluster_name = get_query_var('bicluster');
+
+    $source_url = get_option('source_url', '');
+    $content .= '<div id="patient_survhisto" style="width: 100%; height: 300px"></div>';
+    $content .= "<script>\n";
+    $content .= "    function makePatientSurvHistoChart(data) {";
+    $content .= "      var x, chart = Highcharts.chart('patient_survhisto', {\n";
+    $content .= "        title: { text: 'Patient Survival' },\n";
+    $content .= "        xAxis: [{ title: { text: 'Data' }, alignTicks: false }, { title: { text: 'Histogram' }, alignTicks: false, opposite: true }],";
+    $content .= "       yAxis: [{ title: { text: 'Data' } }, { title: { text: 'Histogram' }, opposite: true }],";
+    $content .= "        series: [{type: 'histogram', xAxis: 1, yAxis: 1, baseSeries: 's1'}, {id: 's1', type: 'scatter', data: data.data, marker: {radius: 1.5}}]\n";
+    $content .= "     })\n";
+    $content .= "   }\n";
+
+    $content .= "  function loadPatientSurvivalHistogram() {\n";
+    $content .= "    jQuery.ajax({\n";
+    $content .= "      url: ajax_dt.ajax_url,\n";
+    $content .= "      method: 'GET',\n";
+    $content .= "      data: {'action': 'bicluster_survival_dt', 'bicluster': '" . $bicluster_name . "' }\n";
+    $content .= "    }).done(function(data) {\n";
+    $content .= "      makePatientSurvHistoChart(data);\n";
+    $content .= "    });\n";
+    $content .= "  };\n";
+    $content .= "  jQuery(document).ready(function() {\n";
+    $content .= "    loadPatientSurvivalHistogram();\n";
+    $content .= "  });\n";
+    $content .= "</script>\n";
+    return $content;
+}
+
+function bc_patient_agehisto_shortcode($attr, $content)
+{
+    $bicluster_name = get_query_var('bicluster');
+
+    $source_url = get_option('source_url', '');
+    $content .= '<div id="patient_agehisto" style="width: 100%; height: 300px"></div>';
+    $content .= "<script>\n";
+    $content .= "    function makePatientAgeHistoChart(data) {";
+    $content .= "      var chart = Highcharts.chart('patient_agehisto', {\n";
+    $content .= "        title: { text: 'Patient Age' },\n";
+    $content .= "        xAxis: [{ title: { text: 'Data' }, alignTicks: false }, { title: { text: 'Histogram' }, alignTicks: false, opposite: true }],";
+    $content .= "       yAxis: [{ title: { text: 'Data' } }, { title: { text: 'Histogram' }, opposite: true }],";
+    $content .= "        series: [{type: 'histogram', xAxis: 1, yAxis: 1, baseSeries: 's1'}, {id: 's1', type: 'scatter', data: data.data, marker: {radius: 1.5}}]\n";
+    $content .= "     })\n";
+    $content .= "   }\n";
+
+    $content .= "  function loadPatientAgeHistogram() {\n";
+    $content .= "    jQuery.ajax({\n";
+    $content .= "      url: ajax_dt.ajax_url,\n";
+    $content .= "      method: 'GET',\n";
+    $content .= "      data: {'action': 'bicluster_ages_dt', 'bicluster': '" . $bicluster_name . "' }\n";
+    $content .= "    }).done(function(data) {\n";
+    $content .= "      makePatientAgeHistoChart(data);\n";
+    $content .= "    });\n";
+    $content .= "  };\n";
+    $content .= "  jQuery(document).ready(function() {\n";
+    $content .= "    loadPatientAgeHistogram();\n";
+    $content .= "  });\n";
+    $content .= "</script>\n";
+    return $content;
+}
+
+function bc_patient_pie_shortcode($attr, $content)
+{
+    $bicluster_name = get_query_var('bicluster');
+
+    $source_url = get_option('source_url', '');
+    $content .= '<div><div id="patient_agepie" style="width: 30%; display: inline-block"></div><div id="patient_sexpie" style="width: 30%; display: inline-block"></div><div id="patient_survpie" style="width: 30%; display: inline-block"></div></div>';
+    $content .= "<script>\n";
+    $content .= "    function makePatientPieCharts(data) {";
+    $content .= "      var chart1 = Highcharts.chart('patient_agepie', {\n";
+    $content .= "        chart: { type: 'pie' },";
+    $content .= "        title: { text: 'Patient Age' },\n";
+    $content .= "        series: [{name: 'Ages', data: data.data.age}]\n";
+    $content .= "     })\n";
+    $content .= "      var chart2 = Highcharts.chart('patient_sexpie', {\n";
+    $content .= "        chart: { type: 'pie' },";
+    $content .= "        title: { text: 'Patient Sex' },\n";
+    $content .= "        series: [{name: 'Sex', data: data.data.sex}]\n";
+    $content .= "     })\n";
+    $content .= "      var chart3 = Highcharts.chart('patient_survpie', {\n";
+    $content .= "        chart: { type: 'pie' },";
+    $content .= "        title: { text: 'Patient Survival' },\n";
+    $content .= "        series: [{name: 'Survival', data: data.data.survival}]\n";
+    $content .= "     })\n";
+    $content .= "   }\n";
+
+    $content .= "  function loadPatientPie() {\n";
+    $content .= "    jQuery.ajax({\n";
+    $content .= "      url: ajax_dt.ajax_url,\n";
+    $content .= "      method: 'GET',\n";
+    $content .= "      data: {'action': 'bicluster_patientstatus_dt', 'bicluster': '" . $bicluster_name . "' }\n";
+    $content .= "    }).done(function(data) {\n";
+    $content .= "       ";
+    $content .= "      makePatientPieCharts(data);\n";
+    $content .= "    });\n";
+    $content .= "  };\n";
+    $content .= "  jQuery(document).ready(function() {\n";
+    $content .= "    loadPatientPie();\n";
+    $content .= "  });\n";
+    $content .= "</script>\n";
+    return $content;
+}
+
 function mmapi_add_shortcodes()
 {
     add_shortcode('summary', 'summary_shortcode');
@@ -748,6 +854,9 @@ function mmapi_add_shortcodes()
     add_shortcode('bicluster_enrichment', 'bicluster_enrichment_graph_shortcode');
     add_shortcode('bicluster_hallmarks', 'bicluster_hallmarks_shortcode');
     add_shortcode('bicluster_name', 'bicluster_name_shortcode');
+    add_shortcode('bc_patient_survhisto', 'bc_patient_survhisto_shortcode');
+    add_shortcode('bc_patient_agehisto', 'bc_patient_agehisto_shortcode');
+    add_shortcode('bc_patient_pie', 'bc_patient_pie_shortcode');
 
     add_shortcode('regulator_survival_plot', 'regulator_survival_plot_shortcode');
     add_shortcode('bicluster_survival_plot', 'bicluster_survival_plot_shortcode');

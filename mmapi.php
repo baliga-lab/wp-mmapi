@@ -104,6 +104,7 @@ function mmapi_init()
     wp_enqueue_script('qtip', plugin_dir_url(__FILE__) . 'js/jquery.qtip.min.js', array('jquery'), false, true);
     wp_enqueue_script('highcharts', plugin_dir_url(__FILE__) . 'js/highcharts.js', array('jquery'));
     wp_enqueue_script('highcharts-more', plugin_dir_url(__FILE__) . 'js/highcharts-more.js', array('jquery'));
+    wp_enqueue_script('histogram-bellcurve', plugin_dir_url(__FILE__) . 'js/histogram-bellcurve.js', array('jquery'));
     wp_enqueue_script('cytoscape', plugin_dir_url(__FILE__) . 'js/cytoscape.min.js');
     wp_enqueue_script('dagre', plugin_dir_url(__FILE__) . 'js/dagre.min.js');
     wp_enqueue_script('cytoscape-dagre', plugin_dir_url(__FILE__) . 'js/cytoscape-dagre.js');

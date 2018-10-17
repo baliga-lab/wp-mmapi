@@ -51,6 +51,53 @@ EOT;
     wp_die();
 }
 
+function bicluster_survival_dt_callback() {
+    header("Content-type: application/json");
+    $bicluster = $_GET['bicluster'];
+    $source_url = get_option('source_url', '');
+    $exps_json = file_get_contents($source_url . "/api/v1.0.0/bicluster_patient_survival/" . rawurlencode($bicluster));
+    $exps = json_decode($exps_json);
+    $data = json_encode($exps->data);
+    $doc = <<<EOT
+{
+  "data": $data
+}
+EOT;
+    echo $doc;
+    wp_die();
+}
+
+function bicluster_ages_dt_callback() {
+    header("Content-type: application/json");
+    $bicluster = $_GET['bicluster'];
+    $source_url = get_option('source_url', '');
+    $exps_json = file_get_contents($source_url . "/api/v1.0.0/bicluster_patient_ages/" . rawurlencode($bicluster));
+    $exps = json_decode($exps_json);
+    $data = json_encode($exps->data);
+    $doc = <<<EOT
+{
+  "data": $data
+}
+EOT;
+    echo $doc;
+    wp_die();
+}
+
+function bicluster_patientstatus_dt_callback() {
+    header("Content-type: application/json");
+    $bicluster = $_GET['bicluster'];
+    $source_url = get_option('source_url', '');
+    $exps_json = file_get_contents($source_url . "/api/v1.0.0/bicluster_patient_status/" . rawurlencode($bicluster));
+    $exps = json_decode($exps_json);
+    $data = json_encode($exps->data);
+    $doc = <<<EOT
+{
+  "data": $data
+}
+EOT;
+    echo $doc;
+    wp_die();
+}
 
 function mmapi_ajax_source_init()
 {
@@ -68,6 +115,14 @@ function mmapi_ajax_source_init()
     add_action('wp_ajax_nopriv_bicluster_enrichment_dt', 'bicluster_enrichment_dt_callback');
     add_action('wp_ajax_bicluster_enrichment_dt', 'bicluster_enrichment_dt_callback');
 
+    add_action('wp_ajax_nopriv_bicluster_survival_dt', 'bicluster_survival_dt_callback');
+    add_action('wp_ajax_bicluster_survival_dt', 'bicluster_survival_dt_callback');
+
+    add_action('wp_ajax_nopriv_bicluster_ages_dt', 'bicluster_ages_dt_callback');
+    add_action('wp_ajax_bicluster_ages_dt', 'bicluster_ages_dt_callback');
+
+    add_action('wp_ajax_nopriv_bicluster_patientstatus_dt', 'bicluster_patientstatus_dt_callback');
+    add_action('wp_ajax_bicluster_patientstatus_dt', 'bicluster_patientstatus_dt_callback');
 }
 
 ?>
