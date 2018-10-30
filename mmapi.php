@@ -88,14 +88,14 @@ function add_query_vars_filter($vars) {
 function mmapi_init()
 {
     // add all javascript and style files that are used by our plugin
-    wp_register_style('uniprot_viewer_css', 'http://ebi-uniprot.github.io/CDN/protvista/css/main.css');
+    wp_register_style('uniprot_viewer_css', 'https://ebi-uniprot.github.io/CDN/protvista/css/main.css');
     wp_enqueue_style('uniprot_viewer_css');
     wp_enqueue_style('jquery-ui', plugin_dir_url(__FILE__) . 'css/jquery-ui.css');
     wp_enqueue_style('datatables', plugin_dir_url(__FILE__) . 'css/jquery.dataTables.min.css');
     wp_enqueue_style('wp-mmapi', plugin_dir_url(__FILE__) . 'css/wp-mmapi.css');
     wp_enqueue_style('qtip', plugin_dir_url(__FILE__) . 'css/jquery.qtip.min.css', null, false, false);
 
-    wp_register_script('uniprot_viewer', 'http://ebi-uniprot.github.io/CDN/protvista/protvista.js');
+    wp_register_script('uniprot_viewer', 'https://ebi-uniprot.github.io/CDN/protvista/protvista.js');
     wp_enqueue_script('uniprot_viewer');
 
     wp_enqueue_script('jquery-ui-autocomplete');
