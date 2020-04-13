@@ -48,7 +48,7 @@ function mutation_table_shortcode($attr, $content=null)
     $content .= "  <thead><tr><th>Regulator</th><th>Role</th><th>Regulon</th><th>Cox Hazard Ratio (Regulon)</th></tr></thead>";
     $content .= "  <tbody>";
     foreach ($entries as $e) {
-        $content .= "    <tr><td><a href=\"index.php/regulator/?regulator=" . $e->regulator . "\">" . $e->regulator . "</a></td><td class=\"$e->role\">" . $e->role . "</td><td><a href=\"index.php/bicluster/?bicluster=" . $e->bicluster . "\">" . $e->bicluster . "</a></td><td>$e->bc_cox_hazard_ratio</td></tr>";
+        $content .= "    <tr><td><a href=\"index.php/regulator/?regulator=" . $e->regulator . "\">" . $e->regulator_preferred . "</a></td><td class=\"$e->role\">" . $e->role . "</td><td><a href=\"index.php/bicluster/?bicluster=" . $e->bicluster . "\">" . $e->bicluster . "</a></td><td>$e->bc_cox_hazard_ratio</td></tr>";
     }
     $content .= "  </tbody>";
     $content .= "</table>";
@@ -68,14 +68,15 @@ function regulator_table_shortcode($attr, $content=null)
     $source_url = get_option('source_url', '');
     $result_json = file_get_contents($source_url . "/api/v1.0.0/regulator/" .
                                      rawurlencode($regulator_name));
-    $entries = json_decode($result_json)->entries;
+    $result = json_decode($result_json);
+    $entries = $result->entries;
     $content = "";
-    $content = "<h3>Regulons for regulator " . $regulator_name . "</h3>";
+    $content = "<h3>Regulons for regulator " . $result->regulator_preferred . "</h3>";
     $content .= "<table id=\"biclusters\" class=\"stripe row-border\">";
     $content .= "  <thead><tr><th>Mutation</th><th>Regulator</th><th>Role</th><th>Regulon</th><th>Cox Hazard Ratio</th></tr></thead>";
     $content .= "  <tbody>";
     foreach ($entries as $e) {
-        $content .= "    <tr><td>$e->mutation</td><td>$regulator_name</td><td class=\"$e->role\">" . $e->role . "</td><td><a href=\"index.php/bicluster/?bicluster=" . $e->bicluster . "\">" .
+        $content .= "    <tr><td>$e->mutation</td><td>$result->regulator_preferred</td><td class=\"$e->role\">" . $e->role . "</td><td><a href=\"index.php/bicluster/?bicluster=" . $e->bicluster . "\">" .
                  $e->bicluster . "</a></td><td>" . $e->hazard_ratio  . "</td></tr>";
     }
     $content .= "  </tbody>";
@@ -128,7 +129,7 @@ function bicluster_tfs_table_shortcode($attr, $content=null)
     $content .= "  <thead><tr><th>Regulator</th><th>Role</th><th>Cox Hazard Ratio</th></tr></thead>";
     $content .= "  <tbody>";
     foreach ($entries as $e) {
-        $content .= "    <tr><td><a href=\"index.php/regulator/?regulator=" . $e->tf . "\">" . $e->tf .
+        $content .= "    <tr><td><a href=\"index.php/regulator/?regulator=" . $e->tf . "\">" . $e->tf_preferred .
                  "</a></td><td>" . $e->role . "</td><td>" . $e->hazard_ratio .  "</td></tr>";
     }
     $content .= "  </tbody>";
@@ -155,7 +156,7 @@ function bicluster_mutation_tfs_table_shortcode($attr, $content=null)
     $content .= "  <thead><tr><th>Mutation</th><th>Role</th><th>Regulator</th></tr></thead>";
     $content .= "  <tbody>";
     foreach ($entries as $e) {
-        $content .= "    <tr><td><a href=\"index.php/mutation/?mutation=" . $e->mutation . "\">" . $e->mutation . "</a></td><td>" . $e->role . "</td><td><a href=\"index.php/regulator/?regulator=" . $e->tf . "\">" . $e->tf . "</a></td></tr>";
+        $content .= "    <tr><td><a href=\"index.php/mutation/?mutation=" . $e->mutation . "\">" . $e->mutation . "</a></td><td>" . $e->role . "</td><td><a href=\"index.php/regulator/?regulator=" . $e->tf . "\">" . $e->tf_preferred . "</a></td></tr>";
     }
     $content .= "  </tbody>";
     $content .= "</table>";
