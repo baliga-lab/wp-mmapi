@@ -249,7 +249,7 @@ function bicluster_cytoscape_shortcode($attr, $content)
     $content .= "        { selector: '.tf', style: { 'background-color': 'blue', 'shape': 'triangle'}},";
     $content .= "        { selector: '.mutation', style: { 'background-color': 'green', 'shape': 'diamond'}}";
     $content .= "      ],";
-    $content .= "      layout: { name: 'dagre' },";
+    $content .= "      layout: { name: 'grid' },";
     $content .= "      elements: " . json_encode(json_decode($result_json)->elements);
     $content .= "    });";
     $content .= "  });";
