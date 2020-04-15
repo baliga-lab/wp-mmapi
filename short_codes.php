@@ -248,8 +248,12 @@ function bicluster_cytoscape_shortcode($attr, $content)
     $content .= "        { selector: '.bicluster', style: { 'background-color': 'red', 'shape': 'square'}},";
     $content .= "        { selector: '.tf', style: { 'background-color': 'blue', 'shape': 'triangle'}},";
     $content .= "        { selector: '.mutation', style: { 'background-color': 'green', 'shape': 'diamond'}}";
+    $content .= "        { selector: '.activates', style: { 'line-color': 'green', 'opacity': 0.5}},";
+    $content .= "        { selector: '.represses', style: { 'line-color': 'red', 'opacity': 0.5}},";
+    $content .= "        { selector: '.up_regulates', style: { 'line-color': 'green', 'opacity': 0.5}},";
+    $content .= "        { selector: '.down_regulates', style: { 'line-color': 'red', 'opacity': 0.5}},";
     $content .= "      ],";
-    $content .= "      layout: { name: 'grid' },";
+    $content .= "      layout: { name: 'dagre' },";
     $content .= "      elements: " . json_encode(json_decode($result_json)->elements);
     $content .= "    });";
     $content .= "  });";
@@ -619,7 +623,7 @@ function causal_flow_cytoscape_shortcode($attr, $content)
     $content .= "        { selector: '.mutation', style: { 'background-color': 'green', 'shape': 'diamond'}}";
     $content .= "      ],";
     #$content .= "      layout: { name: 'cose-bilkent' },";
-    $content .= "      layout: { name: 'grid' },";
+    $content .= "      layout: { name: 'dagre' },";
     $content .= "      elements: " . json_encode(json_decode($result_json));
     $content .= "    });";
     $content .= "    cy.on('tap', '.bicluster', function (e) {";
@@ -662,7 +666,7 @@ function causal_flow_mutation_cytoscape_shortcode($attr, $content)
     $content .= "        { selector: '.tf', style: { 'background-color': 'blue', 'shape': 'triangle'}},";
     $content .= "        { selector: '.mutation', style: { 'background-color': 'green', 'shape': 'diamond'}}";
     $content .= "      ],";
-    $content .= "      layout: { name: 'grid' },";
+    $content .= "      layout: { name: 'dagre' },";
     $content .= "      elements: " . json_encode(json_decode($result_json));
     $content .= "    });";
     $content .= "    cy.on('tap', '.bicluster', function (e) {";
@@ -705,7 +709,7 @@ function causal_flow_regulator_cytoscape_shortcode($attr, $content)
     $content .= "        { selector: '.tf', style: { 'background-color': 'blue', 'shape': 'triangle'}},";
     $content .= "        { selector: '.mutation', style: { 'background-color': 'green', 'shape': 'diamond'}}";
     $content .= "      ],";
-    $content .= "      layout: { name: 'grid' },";
+    $content .= "      layout: { name: 'dagre' },";
     $content .= "      elements: " . json_encode(json_decode($result_json));
     $content .= "    });";
     $content .= "    cy.on('tap', '.bicluster', function (e) {";
