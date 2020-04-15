@@ -247,7 +247,7 @@ function bicluster_cytoscape_shortcode($attr, $content)
     $content .= "        { selector: 'edge', style: { label: 'data(role)', 'line-color': '#000', 'target-arrow-shape': 'triangle', 'target-arrow-color': '#000', 'opacity': 0.5, 'curve-style': 'bezier'}},";
     $content .= "        { selector: '.bicluster', style: { 'background-color': 'red', 'shape': 'square'}},";
     $content .= "        { selector: '.tf', style: { 'background-color': 'blue', 'shape': 'triangle'}},";
-    $content .= "        { selector: '.mutation', style: { 'background-color': 'green', 'shape': 'diamond'}}";
+    $content .= "        { selector: '.mutation', style: { 'background-color': 'green', 'shape': 'diamond'}},";
     $content .= "        { selector: '.activates', style: { 'line-color': 'green', 'opacity': 0.5}},";
     $content .= "        { selector: '.represses', style: { 'line-color': 'red', 'opacity': 0.5}},";
     $content .= "        { selector: '.up_regulates', style: { 'line-color': 'green', 'opacity': 0.5}},";
