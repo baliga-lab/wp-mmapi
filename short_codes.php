@@ -301,7 +301,7 @@ function gene_info_table($gene_name)
     $desc = preg_replace('/\[.*\]/', '', $gene_info->description);
     $content .= "<h3>" . $gene_info->preferred . " - " . $desc;
     $content .= "</h3>";
-    $content .= "<a href=\"index.php/gene-uniprot/?gene=" . $gene_name . "\">" . Uniprot Browser . "</a>"
+    $content .= "<a href=\"index.php/gene-uniprot/?gene=" . $gene_name . "\">" . "Uniprot Browser" . "</a>";
     $content .= "<table>";
     $content .= "  <thead>";
     $content .= "    <tr><th>Entrez ID</th><th>EnsEMBL ID</th><th>Preferred Name</th><th>Uniprot ID</th></tr>";
