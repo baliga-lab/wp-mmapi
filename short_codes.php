@@ -373,12 +373,22 @@ function bicluster_summary_shortcode($attr, $content)
     $result = json_decode($result_json);
     $num_genes = count($result->genes);
     $num_regulators = count($result->tfs_bc);
+    $drugs = implode(', ', $result->drugs);
+    $moas = implode(', ', $result->mechanism_of_action);
+    $hallmarks = implode(', ', $result->hallmarks);
+    if (count($result->target_classes) > 0) {
+        $target_class = $result->target_classes[0]->name;
+        $target_class_pval = $result->target_classes[0]->pval;
+    } else {
+        $target_class = '';
+        $target_class_pval = '';
+    }
 
     $content = "";
     $content .= "<table id=\"summary1\" class=\"row-border\" style=\"margin-bottom: 10px\">";
-    $content .= "  <thead><tr><th>Genes</th><th>Survival<br>(Cox Hazard Ratio)</th><th>Regulators</th><th>Causal Flows</th></tr></thead>";
+    $content .= "  <thead><tr><th>Genes</th><th>Survival<br>(Cox Hazard Ratio)</th><th>Regulators</th><th>Causal Flows</th><th>Transcriptional Program</th><th>Drugs</th><th>Mechanism of Action</th><th>Hallmarks</th><th>Target Class</th></tr></thead>";
     $content .= "  <tbody>";
-    $content .= "    <tr><td><a href=\"#genes\">$num_genes</a></td><td>$result->hazard_ratio</td><td><a href=\"#regulators\">$num_regulators</a></td><td>$result->num_causal_flows</td></tr>";
+    $content .= "    <tr><td><a href=\"#genes\">$num_genes</a></td><td>$result->hazard_ratio</td><td><a href=\"#regulators\">$num_regulators</a></td><td>$result->num_causal_flows</td><td>$result->trans_program</td><td>$drugs</td><td>$moas</td><td>$hallmarks</td><td>$target_class</td></tr>";
     $content .= "  </tbody>";
     $content .= "</table>";
 
