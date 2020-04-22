@@ -516,9 +516,10 @@ function regulator_survival_plot_shortcode($attr, $content=null)
 function bicluster_survival_plot_shortcode($attr, $content=null)
 {
     $bicluster_name = get_query_var('bicluster');
+    $rname = str_replace("R-", "regulon_", $bicluster_name) . "_survival";
     $static_url = get_option('static_url', '');
     // check if available, otherwise return nothing
-    $img_url = $static_url . "/survival_plots_biclusters/" . rawurlencode($bicluster_name) . ".png";
+    $img_url = $static_url . "/regulon_survival_plots/" . rawurlencode($rname) . ".png";
     $file_headers = @get_headers($img_url);
     if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found'
         || $file_headers[0] == 'HTTP/1.1 400 Bad Request') {
