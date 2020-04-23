@@ -153,10 +153,10 @@ function bicluster_mutation_tfs_table_shortcode($attr, $content=null)
     $content = "";
     //$content = "<h3>Mutations - Regulators for regulon " . $bicluster_name . "</h3>";
     $content .= "<table id=\"bc_mutations_tfs\" class=\"stripe row-border\">";
-    $content .= "  <thead><tr><th>Mutation</th><th>Role</th><th>Regulator</th></tr></thead>";
+    $content .= "  <thead><tr><th>Mutation</th><th>Role</th><th>Regulator</th><th>Role</th><th>Regulon</th><th>Hazard Ratio</th></tr></thead>";
     $content .= "  <tbody>";
     foreach ($entries as $e) {
-        $content .= "    <tr><td><a href=\"index.php/mutation/?mutation=" . $e->mutation . "\">" . $e->mutation . "</a></td><td>" . $e->role . "</td><td><a href=\"index.php/regulator/?regulator=" . $e->tf . "\">" . $e->tf_preferred . "</a></td></tr>";
+        $content .= "    <tr><td><a href=\"index.php/mutation/?mutation=" . $e->mutation . "\">" . $e->mutation . "</a></td><td>" . $e->mutation_role . "</td><td><a href=\"index.php/regulator/?regulator=" . $e->tf . "\">" . $e->tf_preferred . "</a></td><td>" . $e->regulator_role . "</td><td>" . $bicluster_name . "</td><td>" . $e->hazard_ratio . "</td></tr>";
     }
     $content .= "  </tbody>";
     $content .= "</table>";
