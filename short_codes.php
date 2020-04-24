@@ -76,7 +76,7 @@ function regulator_table_shortcode($attr, $content=null)
     $content .= "  <thead><tr><th>Mutation</th><th>Regulator</th><th>Role</th><th>Regulon</th><th>Cox Hazard Ratio</th></tr></thead>";
     $content .= "  <tbody>";
     foreach ($entries as $e) {
-        $content .= "    <tr><td><a href=\"index.php/mutation/?mutation=" . $e->mutation . "\">" "</a></td><td>$result->regulator_preferred</td><td class=\"$e->role\">" . $e->role . "</td><td><a href=\"index.php/bicluster/?bicluster=" . $e->bicluster . "\">" .
+        $content .= "    <tr><td><a href=\"index.php/mutation/?mutation=" . $e->mutation . "\">" . $e->mutation . "</a></td><td>$result->regulator_preferred</td><td class=\"$e->role\">" . $e->role . "</td><td><a href=\"index.php/bicluster/?bicluster=" . $e->bicluster . "\">" .
                  $e->bicluster . "</a></td><td>" . $e->hazard_ratio  . "</td></tr>";
     }
     $content .= "  </tbody>";
