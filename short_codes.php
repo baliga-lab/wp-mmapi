@@ -17,7 +17,7 @@ function summary_shortcode($attr, $content=null)
     $content .= "    <tr><td>" . $summary->num_biclusters . "</td><td>Regulons</td></tr>";
     $content .= "    <tr><td>" . $summary->num_mutations . "</td><td>Mutations</td></tr>";
     $content .= "    <tr><td>" . $summary->num_regulators . "</td><td>Regulators</td></tr>";
-    $content .= "    <tr><td>" . $summary->num_patients . "</td><td>Patients</td></tr>";
+    //$content .= "    <tr><td>" . $summary->num_patients . "</td><td>Patients</td></tr>";
     $content .= "  </tbody>";
     $content .= "</table>";
     $content .= "<script>";
@@ -43,7 +43,7 @@ function mutation_table_shortcode($attr, $content=null)
     $entries = json_decode($result_json)->entries;
 
     $content = "";
-    $content .= "<h3>Regulons for Mutation <i>" . $mutation_name . "</i></h3>";
+    $content .= "<h3>Causal Flows for Mutation <i>" . $mutation_name . "</i></h3>";
     $content .= "<table id=\"biclusters\" class=\"stripe row-border\">";
     $content .= "  <thead><tr><th>Regulator</th><th>Role</th><th>Regulon</th><th>Cox Hazard Ratio (Regulon)</th></tr></thead>";
     $content .= "  <tbody>";
@@ -71,12 +71,12 @@ function regulator_table_shortcode($attr, $content=null)
     $result = json_decode($result_json);
     $entries = $result->entries;
     $content = "";
-    $content = "<h3>Regulons for regulator " . $result->regulator_preferred . "</h3>";
+    $content = "<h3>Causal Flows for Regulator: " . $result->regulator_preferred . "</h3>";
     $content .= "<table id=\"biclusters\" class=\"stripe row-border\">";
     $content .= "  <thead><tr><th>Mutation</th><th>Regulator</th><th>Role</th><th>Regulon</th><th>Cox Hazard Ratio</th></tr></thead>";
     $content .= "  <tbody>";
     foreach ($entries as $e) {
-        $content .= "    <tr><td>$e->mutation</td><td>$result->regulator_preferred</td><td class=\"$e->role\">" . $e->role . "</td><td><a href=\"index.php/bicluster/?bicluster=" . $e->bicluster . "\">" .
+        $content .= "    <tr><td><a href=\"index.php/mutation/?mutation=" . $e->mutation . "\">" "</a></td><td>$result->regulator_preferred</td><td class=\"$e->role\">" . $e->role . "</td><td><a href=\"index.php/bicluster/?bicluster=" . $e->bicluster . "\">" .
                  $e->bicluster . "</a></td><td>" . $e->hazard_ratio  . "</td></tr>";
     }
     $content .= "  </tbody>";
@@ -237,7 +237,7 @@ function bicluster_cytoscape_shortcode($attr, $content)
     $result_json = file_get_contents($source_url . "/api/v1.0.0/bicluster_network/" .
                                      rawurlencode($bicluster_name));
     $content = "";
-    $content .= "<div id=\"cytoscape\"><h3>Influences</h3></div>";
+    $content .= "<div id=\"cytoscape\"><h3>Causal Flow Network</h3></div>";
     $content .= "<script>";
     $content .= "  jQuery(document).ready(function() {";
     $content .= "    var cy = cytoscape({";
@@ -249,10 +249,10 @@ function bicluster_cytoscape_shortcode($attr, $content)
     $content .= "        { selector: '.bicluster', style: { 'background-color': 'red', 'shape': 'square'}},";
     $content .= "        { selector: '.tf', style: { 'background-color': 'blue', 'shape': 'triangle'}},";
     $content .= "        { selector: '.mutation', style: { 'background-color': 'green', 'shape': 'diamond'}},";
-    $content .= "        { selector: '.activates', style: { 'line-color': 'green', 'opacity': 0.5}},";
-    $content .= "        { selector: '.represses', style: { 'line-color': 'red', 'opacity': 0.5}},";
-    $content .= "        { selector: '.up_regulates', style: { 'line-color': 'green', 'opacity': 0.5}},";
-    $content .= "        { selector: '.down_regulates', style: { 'line-color': 'red', 'opacity': 0.5}},";
+    $content .= "        { selector: '.activates', style: { 'line-color': 'red', 'opacity': 0.5}},";
+    $content .= "        { selector: '.represses', style: { 'line-color': 'green', 'opacity': 0.5}},";
+    $content .= "        { selector: '.up_regulates', style: { 'line-color': 'red', 'opacity': 0.5}},";
+    $content .= "        { selector: '.down_regulates', style: { 'line-color': 'green', 'opacity': 0.5}},";
     $content .= "      ],";
     $content .= "      layout: { name: 'dagre' },";
     $content .= "      elements: " . json_encode(json_decode($result_json)->elements);
@@ -312,8 +312,8 @@ function gene_info_table($gene_name)
     $content .= "      <td><a href=\"http://www.ensembl.org/id/" . $gene_info->ensembl_id . "\" target=\"_blank\">" . $gene_info->ensembl_id . "</a></td>";
     $content .= "      <td>" . $gene_info->preferred . "</td>";
     $content .= "      <td><a href=\"https://www.uniprot.org/uniprot/" . $gene_info->uniprot_id . "\" target=\"_blank\">" . $gene_info->uniprot_id . "</a></td>";
-    $content .= "    </tr></tr>";
-    $content .= "      <td colspan=\"4\"><b>Function:</b> " . $gene_info->function . "</td>";
+    $content .= "    </tr><tr>";
+    //$content .= "      <td colspan=\"4\"><b>Function:</b> " . $gene_info->function . "</td>";
     $content .= "    </tr>";
     $content .= "  </tbody>";
     $content .= "</table>";
@@ -386,7 +386,7 @@ function bicluster_summary_shortcode($attr, $content)
 
     $content = "";
     $content .= "<table id=\"summary1\" class=\"row-border\" style=\"margin-bottom: 10px\">";
-    $content .= "  <thead><tr><th>Genes</th><th>Survival<br>(Cox Hazard Ratio)</th><th>Regulators</th><th>Causal Flows</th><th>Transcriptional Program</th><th>Drugs</th><th>Mechanism of Action</th><th>Hallmarks</th><th>Target Class</th></tr></thead>";
+    $content .= "  <thead><tr><th>Genes</th><th>Cox Hazard Ratio</th><th>Regulators</th><th>Causal Flows</th><th>Transcriptional Program</th><th>Drugs</th><th>Mechanism of Action</th><th>Hallmarks</th><th>Target Class</th></tr></thead>";
     $content .= "  <tbody>";
     $content .= "    <tr><td><a href=\"#genes\">$num_genes</a></td><td>$result->hazard_ratio</td><td><a href=\"#regulators\">$num_regulators</a></td><td>$result->num_causal_flows</td><td>$result->trans_program</td><td>$drugs</td><td>$moas</td><td>$hallmarks</td><td>$target_class</td></tr>";
     $content .= "  </tbody>";
@@ -597,7 +597,7 @@ function causal_flow_table_shortcode($attr, $content=null)
     $content .= "  <tbody>";
     foreach ($entries as $e) {
         $content .= "    <tr><td><a href=\"index.php/mutation/?mutation=$e->mutation\">$e->mutation</a></td><td>$e->mutation_role</td>";
-        $content .= "<td><a href=\"index.php/regulator/?regulator=$e->regulator\">$e->regulator</a></td><td>$e->regulator_role</td><td><a href=\"index.php/bicluster/?bicluster=$e->bicluster\">$e->bicluster</a></td>";
+        $content .= "<td><a href=\"index.php/regulator/?regulator=$e->regulator\">$e->regulator_preferred</a></td><td>$e->regulator_role</td><td><a href=\"index.php/bicluster/?bicluster=$e->bicluster\">$e->bicluster</a></td>";
         $content .= "<td>$e->hazard_ratio</td>";
         $content .= "<td><a href=\"index.php/bicluster/?bicluster=$e->bicluster#genes\">$e->num_genes</a></td>";
         $content .= "</tr>";
@@ -626,10 +626,10 @@ function causal_flow_cytoscape_shortcode($attr, $content)
     $content .= "      style: [";
     $content .= "        { selector: 'node', style: { label: 'data(name)'}},";
     $content .= "        { selector: 'edge', style: { 'line-color': '#000', 'width': 3, 'opacity': 0.5}},";
-    $content .= "        { selector: '.activates', style: { 'line-color': 'green', 'opacity': 0.5}},";
-    $content .= "        { selector: '.represses', style: { 'line-color': 'red', 'opacity': 0.5}},";
-    $content .= "        { selector: '.up_regulates', style: { 'line-color': 'green', 'opacity': 0.5}},";
-    $content .= "        { selector: '.down_regulates', style: { 'line-color': 'red', 'opacity': 0.5}},";
+    $content .= "        { selector: '.activates', style: { 'line-color': 'red', 'opacity': 0.5}},";
+    $content .= "        { selector: '.represses', style: { 'line-color': 'green', 'opacity': 0.5}},";
+    $content .= "        { selector: '.up_regulates', style: { 'line-color': 'red', 'opacity': 0.5}},";
+    $content .= "        { selector: '.down_regulates', style: { 'line-color': 'green', 'opacity': 0.5}},";
 
     $content .= "        { selector: '.bicluster', style: { 'background-color': 'red', 'shape': 'square'}},";
     $content .= "        { selector: '.tf', style: { 'background-color': 'blue', 'shape': 'triangle'}},";
@@ -670,10 +670,10 @@ function causal_flow_mutation_cytoscape_shortcode($attr, $content)
     $content .= "      style: [";
     $content .= "        { selector: 'node', style: { label: 'data(name)'}},";
     $content .= "        { selector: 'edge', style: { 'line-color': '#000', 'width': 3, 'opacity': 0.5}},";
-    $content .= "        { selector: '.activates', style: { 'line-color': 'green', 'opacity': 0.5}},";
-    $content .= "        { selector: '.represses', style: { 'line-color': 'red', 'opacity': 0.5}},";
-    $content .= "        { selector: '.up_regulates', style: { 'line-color': 'green', 'opacity': 0.5}},";
-    $content .= "        { selector: '.down_regulates', style: { 'line-color': 'red', 'opacity': 0.5}},";
+    $content .= "        { selector: '.activates', style: { 'line-color': 'red', 'opacity': 0.5}},";
+    $content .= "        { selector: '.represses', style: { 'line-color': 'green', 'opacity': 0.5}},";
+    $content .= "        { selector: '.up_regulates', style: { 'line-color': 'red', 'opacity': 0.5}},";
+    $content .= "        { selector: '.down_regulates', style: { 'line-color': 'green', 'opacity': 0.5}},";
 
     $content .= "        { selector: '.bicluster', style: { 'background-color': 'red', 'shape': 'square'}},";
     $content .= "        { selector: '.tf', style: { 'background-color': 'blue', 'shape': 'triangle'}},";
@@ -713,10 +713,10 @@ function causal_flow_regulator_cytoscape_shortcode($attr, $content)
     $content .= "      style: [";
     $content .= "        { selector: 'node', style: { label: 'data(name)'}},";
     $content .= "        { selector: 'edge', style: { 'line-color': '#000', 'width': 3, 'opacity': 0.5}},";
-    $content .= "        { selector: '.activates', style: { 'line-color': 'green', 'opacity': 0.5}},";
-    $content .= "        { selector: '.represses', style: { 'line-color': 'red', 'opacity': 0.5}},";
-    $content .= "        { selector: '.up_regulates', style: { 'line-color': 'green', 'opacity': 0.5}},";
-    $content .= "        { selector: '.down_regulates', style: { 'line-color': 'red', 'opacity': 0.5}},";
+    $content .= "        { selector: '.activates', style: { 'line-color': 'red', 'opacity': 0.5}},";
+    $content .= "        { selector: '.represses', style: { 'line-color': 'green', 'opacity': 0.5}},";
+    $content .= "        { selector: '.up_regulates', style: { 'line-color': 'red', 'opacity': 0.5}},";
+    $content .= "        { selector: '.down_regulates', style: { 'line-color': 'green', 'opacity': 0.5}},";
 
     $content .= "        { selector: '.bicluster', style: { 'background-color': 'red', 'shape': 'square'}},";
     $content .= "        { selector: '.tf', style: { 'background-color': 'blue', 'shape': 'triangle'}},";
