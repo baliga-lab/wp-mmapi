@@ -856,6 +856,7 @@ function mutation_causal_flow_table_shortcode($attr, $content=null)
     $result_json = file_get_contents($source_url . "/api/v1.0.0/cfsearch/" . $search_term);
     $entries = json_decode($result_json)->by_mutation;
     $content = "";
+    $content .= "<h3>Causal Flows regulated by Mutation in <b>" . $search_term . "</b></h3>";
     $content .= "<table id=\"mut_causal_flow\" class=\"stripe row-border\">";
     $content .= "  <thead><tr><th>Mutation</th><th>Role</th><th>Regulator</th><th>Role</th><th>Regulon</th><th>Hazard Ratio</th><th># regulon genes</th></tr></thead>";
     $content .= "  <tbody>";
@@ -884,6 +885,7 @@ function regulator_causal_flow_table_shortcode($attr, $content=null)
     $result_json = file_get_contents($source_url . "/api/v1.0.0/cfsearch/" . $search_term);
     $entries = json_decode($result_json)->by_regulator;
     $content = "";
+    $content .= "<h3>Causal Flows with <b>" . $search_term . "</b> as Regulator</h3>";
     $content .= "<table id=\"reg_causal_flow\" class=\"stripe row-border\">";
     $content .= "  <thead><tr><th>Mutation</th><th>Role</th><th>Regulator</th><th>Role</th><th>Regulon</th><th>Hazard Ratio</th><th># regulon genes</th></tr></thead>";
     $content .= "  <tbody>";
@@ -913,6 +915,7 @@ function reggenes_causal_flow_table_shortcode($attr, $content=null)
     $result_json = file_get_contents($source_url . "/api/v1.0.0/cfsearch/" . $search_term);
     $entries = json_decode($result_json)->by_reggenes;
     $content = "";
+    $content .= "<h3>Causal Flows with regulons containing <b>" . $search_term . "</b> gene</h3>";
     $content .= "<table id=\"rgg_causal_flow\" class=\"stripe row-border\">";
     $content .= "  <thead><tr><th>Mutation</th><th>Role</th><th>Regulator</th><th>Role</th><th>Regulon</th><th>Hazard Ratio</th><th># regulon genes</th></tr></thead>";
     $content .= "  <tbody>";
