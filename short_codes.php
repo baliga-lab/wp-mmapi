@@ -585,6 +585,31 @@ function patient_tf_activity_table_shortcode($attr, $content=null)
     return $content;
 }
 
+/*
+ * Generic code to generate causal flow table
+ */
+function add_causal_flow_table($content, $entries, $tableId) {
+    $content .= "<table id=\"$tableId\" class=\"stripe row-border\">";
+    $content .= "  <thead><tr><th>Mutation</th><th>Role</th><th>Regulator</th><th>Role</th><th>Regulon</th><th>Hazard Ratio</th><th># regulon genes</th><th>Transcriptional Program</th></tr></thead>";
+    $content .= "  <tbody>";
+    foreach ($entries as $e) {
+        $content .= "    <tr><td><a href=\"index.php/mutation/?mutation=$e->mutation\">$e->mutation</a></td><td>$e->mutation_role</td>";
+        $content .= "<td><a href=\"index.php/regulator/?regulator=$e->regulator\">$e->regulator_preferred</a></td><td>$e->regulator_role</td><td><a href=\"index.php/bicluster/?bicluster=$e->bicluster\">$e->bicluster</a></td>";
+        $content .= "<td>$e->hazard_ratio</td>";
+        $content .= "<td><a href=\"index.php/bicluster/?bicluster=$e->bicluster#genes\">$e->num_genes</a></td>";
+        $content .= "<td><a href=\"index.php/program/?program=$e->trans_program\">$e->trans_program</a></td>";
+        $content .= "</tr>";
+    }
+    $content .= "  </tbody>";
+    $content .= "</table>";
+    $content .= "<script>";
+    $content .= "  jQuery(document).ready(function() {";
+    $content .= "    jQuery('#" . $tableId . "').DataTable({";
+    $content .= "    })";
+    $content .= "  });";
+    $content .= "</script>";
+    return $content;
+}
 
 function causal_flow_table_shortcode($attr, $content=null)
 {
@@ -592,24 +617,7 @@ function causal_flow_table_shortcode($attr, $content=null)
     $result_json = file_get_contents($source_url . "/api/v1.0.0/causal_flow");
     $entries = json_decode($result_json)->entries;
     $content = "";
-    $content .= "<table id=\"causal_flow\" class=\"stripe row-border\">";
-    $content .= "  <thead><tr><th>Mutation</th><th>Role</th><th>Regulator</th><th>Role</th><th>Regulon</th><th>Hazard Ratio</th><th># regulon genes</th></tr></thead>";
-    $content .= "  <tbody>";
-    foreach ($entries as $e) {
-        $content .= "    <tr><td><a href=\"index.php/mutation/?mutation=$e->mutation\">$e->mutation</a></td><td>$e->mutation_role</td>";
-        $content .= "<td><a href=\"index.php/regulator/?regulator=$e->regulator\">$e->regulator_preferred</a></td><td>$e->regulator_role</td><td><a href=\"index.php/bicluster/?bicluster=$e->bicluster\">$e->bicluster</a></td>";
-        $content .= "<td>$e->hazard_ratio</td>";
-        $content .= "<td><a href=\"index.php/bicluster/?bicluster=$e->bicluster#genes\">$e->num_genes</a></td>";
-        $content .= "</tr>";
-    }
-    $content .= "  </tbody>";
-    $content .= "</table>";
-    $content .= "<script>";
-    $content .= "  jQuery(document).ready(function() {";
-    $content .= "    jQuery('#causal_flow').DataTable({";
-    $content .= "    })";
-    $content .= "  });";
-    $content .= "</script>";
+    $content = add_causal_flow_table($content, $entries, "causal_flow");
     return $content;
 }
 
@@ -857,24 +865,7 @@ function mutation_causal_flow_table_shortcode($attr, $content=null)
     $entries = json_decode($result_json)->by_mutation;
     $content = "";
     $content .= "<h3>Causal Flows regulated by Mutation in <b>" . $search_term . "</b></h3>";
-    $content .= "<table id=\"mut_causal_flow\" class=\"stripe row-border\">";
-    $content .= "  <thead><tr><th>Mutation</th><th>Role</th><th>Regulator</th><th>Role</th><th>Regulon</th><th>Hazard Ratio</th><th># regulon genes</th></tr></thead>";
-    $content .= "  <tbody>";
-    foreach ($entries as $e) {
-        $content .= "    <tr><td><a href=\"index.php/mutation/?mutation=$e->mutation\">$e->mutation</a></td><td>$e->mutation_role</td>";
-        $content .= "<td><a href=\"index.php/regulator/?regulator=$e->regulator\">$e->regulator_preferred</a></td><td>$e->regulator_role</td><td><a href=\"index.php/bicluster/?bicluster=$e->bicluster\">$e->bicluster</a></td>";
-        $content .= "<td>$e->hazard_ratio</td>";
-        $content .= "<td><a href=\"index.php/bicluster/?bicluster=$e->bicluster#genes\">$e->num_genes</a></td>";
-        $content .= "</tr>";
-    }
-    $content .= "  </tbody>";
-    $content .= "</table>";
-    $content .= "<script>";
-    $content .= "  jQuery(document).ready(function() {";
-    $content .= "    jQuery('#mut_causal_flow').DataTable({";
-    $content .= "    })";
-    $content .= "  });";
-    $content .= "</script>";
+    $content = add_causal_flow_table($content, $entries, "mut_causal_flow");
     return $content;
 }
 
@@ -886,24 +877,7 @@ function regulator_causal_flow_table_shortcode($attr, $content=null)
     $entries = json_decode($result_json)->by_regulator;
     $content = "";
     $content .= "<h3>Causal Flows with <b>" . $search_term . "</b> as Regulator</h3>";
-    $content .= "<table id=\"reg_causal_flow\" class=\"stripe row-border\">";
-    $content .= "  <thead><tr><th>Mutation</th><th>Role</th><th>Regulator</th><th>Role</th><th>Regulon</th><th>Hazard Ratio</th><th># regulon genes</th></tr></thead>";
-    $content .= "  <tbody>";
-    foreach ($entries as $e) {
-        $content .= "    <tr><td><a href=\"index.php/mutation/?mutation=$e->mutation\">$e->mutation</a></td><td>$e->mutation_role</td>";
-        $content .= "<td><a href=\"index.php/regulator/?regulator=$e->regulator\">$e->regulator_preferred</a></td><td>$e->regulator_role</td><td><a href=\"index.php/bicluster/?bicluster=$e->bicluster\">$e->bicluster</a></td>";
-        $content .= "<td>$e->hazard_ratio</td>";
-        $content .= "<td><a href=\"index.php/bicluster/?bicluster=$e->bicluster#genes\">$e->num_genes</a></td>";
-        $content .= "</tr>";
-    }
-    $content .= "  </tbody>";
-    $content .= "</table>";
-    $content .= "<script>";
-    $content .= "  jQuery(document).ready(function() {";
-    $content .= "    jQuery('#reg_causal_flow').DataTable({";
-    $content .= "    })";
-    $content .= "  });";
-    $content .= "</script>";
+    $content = add_causal_flow_table($content, $entries, "reg_causal_flow");
     return $content;
 }
 
@@ -916,24 +890,7 @@ function reggenes_causal_flow_table_shortcode($attr, $content=null)
     $entries = json_decode($result_json)->by_reggenes;
     $content = "";
     $content .= "<h3>Causal Flows with regulons containing <b>" . $search_term . "</b> gene</h3>";
-    $content .= "<table id=\"rgg_causal_flow\" class=\"stripe row-border\">";
-    $content .= "  <thead><tr><th>Mutation</th><th>Role</th><th>Regulator</th><th>Role</th><th>Regulon</th><th>Hazard Ratio</th><th># regulon genes</th></tr></thead>";
-    $content .= "  <tbody>";
-    foreach ($entries as $e) {
-        $content .= "    <tr><td><a href=\"index.php/mutation/?mutation=$e->mutation\">$e->mutation</a></td><td>$e->mutation_role</td>";
-        $content .= "<td><a href=\"index.php/regulator/?regulator=$e->regulator\">$e->regulator_preferred</a></td><td>$e->regulator_role</td><td><a href=\"index.php/bicluster/?bicluster=$e->bicluster\">$e->bicluster</a></td>";
-        $content .= "<td>$e->hazard_ratio</td>";
-        $content .= "<td><a href=\"index.php/bicluster/?bicluster=$e->bicluster#genes\">$e->num_genes</a></td>";
-        $content .= "</tr>";
-    }
-    $content .= "  </tbody>";
-    $content .= "</table>";
-    $content .= "<script>";
-    $content .= "  jQuery(document).ready(function() {";
-    $content .= "    jQuery('#rgg_causal_flow').DataTable({";
-    $content .= "    })";
-    $content .= "  });";
-    $content .= "</script>";
+    $content = add_causal_flow_table($content, $entries, "rgg_causal_flow");
     return $content;
 }
 
@@ -946,24 +903,7 @@ function program_causal_flow_table_shortcode($attr, $content=null)
     $entries = json_decode($result_json)->entries;
     $content = "";
     $content .= "<h3>Causal Flows with regulons containing program <b>" . $program . "</b></h3>";
-    $content .= "<table id=\"prog_causal_flow\" class=\"stripe row-border\">";
-    $content .= "  <thead><tr><th>Mutation</th><th>Role</th><th>Regulator</th><th>Role</th><th>Regulon</th><th>Hazard Ratio</th><th># regulon genes</th></tr></thead>";
-    $content .= "  <tbody>";
-    foreach ($entries as $e) {
-        $content .= "    <tr><td><a href=\"index.php/mutation/?mutation=$e->mutation\">$e->mutation</a></td><td>$e->mutation_role</td>";
-        $content .= "<td><a href=\"index.php/regulator/?regulator=$e->regulator\">$e->regulator_preferred</a></td><td>$e->regulator_role</td><td><a href=\"index.php/bicluster/?bicluster=$e->bicluster\">$e->bicluster</a></td>";
-        $content .= "<td>$e->hazard_ratio</td>";
-        $content .= "<td><a href=\"index.php/bicluster/?bicluster=$e->bicluster#genes\">$e->num_genes</a></td>";
-        $content .= "</tr>";
-    }
-    $content .= "  </tbody>";
-    $content .= "</table>";
-    $content .= "<script>";
-    $content .= "  jQuery(document).ready(function() {";
-    $content .= "    jQuery('#prog_causal_flow').DataTable({";
-    $content .= "    })";
-    $content .= "  });";
-    $content .= "</script>";
+    $content = add_causal_flow_table($content, $entries, "prog_causal_flow");
     return $content;
 }
 
