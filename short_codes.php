@@ -388,7 +388,7 @@ function bicluster_summary_shortcode($attr, $content)
     $content .= "<table id=\"summary1\" class=\"row-border\" style=\"margin-bottom: 10px\">";
     $content .= "  <thead><tr><th>Genes</th><th>Cox Hazard Ratio</th><th>Regulators</th><th>Causal Flows</th><th>Transcriptional Program</th><th>Drugs</th><th>Mechanism of Action</th><th>Hallmarks</th><th>Target Class</th></tr></thead>";
     $content .= "  <tbody>";
-    $content .= "    <tr><td><a href=\"#genes\">$num_genes</a></td><td>$result->hazard_ratio</td><td><a href=\"#regulators\">$num_regulators</a></td><td>$result->num_causal_flows</td><td>$result->trans_program</td><td>$drugs</td><td>$moas</td><td>$hallmarks</td><td>$target_class</td></tr>";
+    $content .= "    <tr><td><a href=\"#genes\">$num_genes</a></td><td>$result->hazard_ratio</td><td><a href=\"#regulators\">$num_regulators</a></td><td>$result->num_causal_flows</td><td><a href=\"index.php/program/?program=" . $result->trans_program . "\">$result->trans_program</a></td><td>$drugs</td><td>$moas</td><td>$hallmarks</td><td>$target_class</td></tr>";
     $content .= "  </tbody>";
     $content .= "</table>";
 
@@ -938,6 +938,35 @@ function reggenes_causal_flow_table_shortcode($attr, $content=null)
 }
 
 
+function program_causal_flow_table_shortcode($attr, $content=null)
+{
+    $source_url = get_option('source_url', '');
+    $program = get_query_var('program');
+    $result_json = file_get_contents($source_url . "/api/v1.0.0/causal_flows_with_program/" . $program);
+    $entries = json_decode($result_json)->entries;
+    $content = "";
+    $content .= "<h3>Causal Flows with regulons containing program <b>" . $program . "</b></h3>";
+    $content .= "<table id=\"prog_causal_flow\" class=\"stripe row-border\">";
+    $content .= "  <thead><tr><th>Mutation</th><th>Role</th><th>Regulator</th><th>Role</th><th>Regulon</th><th>Hazard Ratio</th><th># regulon genes</th></tr></thead>";
+    $content .= "  <tbody>";
+    foreach ($entries as $e) {
+        $content .= "    <tr><td><a href=\"index.php/mutation/?mutation=$e->mutation\">$e->mutation</a></td><td>$e->mutation_role</td>";
+        $content .= "<td><a href=\"index.php/regulator/?regulator=$e->regulator\">$e->regulator_preferred</a></td><td>$e->regulator_role</td><td><a href=\"index.php/bicluster/?bicluster=$e->bicluster\">$e->bicluster</a></td>";
+        $content .= "<td>$e->hazard_ratio</td>";
+        $content .= "<td><a href=\"index.php/bicluster/?bicluster=$e->bicluster#genes\">$e->num_genes</a></td>";
+        $content .= "</tr>";
+    }
+    $content .= "  </tbody>";
+    $content .= "</table>";
+    $content .= "<script>";
+    $content .= "  jQuery(document).ready(function() {";
+    $content .= "    jQuery('#prog_causal_flow').DataTable({";
+    $content .= "    })";
+    $content .= "  });";
+    $content .= "</script>";
+    return $content;
+}
+
 function mmapi_add_shortcodes()
 {
     add_shortcode('summary', 'summary_shortcode');
@@ -981,6 +1010,7 @@ function mmapi_add_shortcodes()
     add_shortcode('mutation_causal_flow_table', 'mutation_causal_flow_table_shortcode');
     add_shortcode('regulator_causal_flow_table', 'regulator_causal_flow_table_shortcode');
     add_shortcode('reggenes_causal_flow_table', 'reggenes_causal_flow_table_shortcode');
+    add_shortcode('program_causal_flow_table', 'program_causal_flow_table_shortcode');
 }
 
 ?>
