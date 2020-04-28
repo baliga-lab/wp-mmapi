@@ -848,6 +848,93 @@ function bc_patient_pie_shortcode($attr, $content)
     return $content;
 }
 
+
+function mutation_causal_flow_table_shortcode($attr, $content=null)
+{
+    $source_url = get_option('source_url', '');
+    $search_term = get_query_var('search_term');
+    $result_json = file_get_contents($source_url . "/api/v1.0.0/cfsearch/" . $search_term);
+    $entries = json_decode($result_json)->by_mutation;
+    $content = "";
+    $content .= "<table id=\"mut_causal_flow\" class=\"stripe row-border\">";
+    $content .= "  <thead><tr><th>Mutation</th><th>Role</th><th>Regulator</th><th>Role</th><th>Regulon</th><th>Hazard Ratio</th><th># regulon genes</th></tr></thead>";
+    $content .= "  <tbody>";
+    foreach ($entries as $e) {
+        $content .= "    <tr><td><a href=\"index.php/mutation/?mutation=$e->mutation\">$e->mutation</a></td><td>$e->mutation_role</td>";
+        $content .= "<td><a href=\"index.php/regulator/?regulator=$e->regulator\">$e->regulator_preferred</a></td><td>$e->regulator_role</td><td><a href=\"index.php/bicluster/?bicluster=$e->bicluster\">$e->bicluster</a></td>";
+        $content .= "<td>$e->hazard_ratio</td>";
+        $content .= "<td><a href=\"index.php/bicluster/?bicluster=$e->bicluster#genes\">$e->num_genes</a></td>";
+        $content .= "</tr>";
+    }
+    $content .= "  </tbody>";
+    $content .= "</table>";
+    $content .= "<script>";
+    $content .= "  jQuery(document).ready(function() {";
+    $content .= "    jQuery('#mut_causal_flow').DataTable({";
+    $content .= "    })";
+    $content .= "  });";
+    $content .= "</script>";
+    return $content;
+}
+
+function regulator_causal_flow_table_shortcode($attr, $content=null)
+{
+    $source_url = get_option('source_url', '');
+    $search_term = get_query_var('search_term');
+    $result_json = file_get_contents($source_url . "/api/v1.0.0/cfsearch/" . $search_term);
+    $entries = json_decode($result_json)->by_regulator;
+    $content = "";
+    $content .= "<table id=\"reg_causal_flow\" class=\"stripe row-border\">";
+    $content .= "  <thead><tr><th>Mutation</th><th>Role</th><th>Regulator</th><th>Role</th><th>Regulon</th><th>Hazard Ratio</th><th># regulon genes</th></tr></thead>";
+    $content .= "  <tbody>";
+    foreach ($entries as $e) {
+        $content .= "    <tr><td><a href=\"index.php/mutation/?mutation=$e->mutation\">$e->mutation</a></td><td>$e->mutation_role</td>";
+        $content .= "<td><a href=\"index.php/regulator/?regulator=$e->regulator\">$e->regulator_preferred</a></td><td>$e->regulator_role</td><td><a href=\"index.php/bicluster/?bicluster=$e->bicluster\">$e->bicluster</a></td>";
+        $content .= "<td>$e->hazard_ratio</td>";
+        $content .= "<td><a href=\"index.php/bicluster/?bicluster=$e->bicluster#genes\">$e->num_genes</a></td>";
+        $content .= "</tr>";
+    }
+    $content .= "  </tbody>";
+    $content .= "</table>";
+    $content .= "<script>";
+    $content .= "  jQuery(document).ready(function() {";
+    $content .= "    jQuery('#reg_causal_flow').DataTable({";
+    $content .= "    })";
+    $content .= "  });";
+    $content .= "</script>";
+    return $content;
+}
+
+
+function reggenes_causal_flow_table_shortcode($attr, $content=null)
+{
+    $source_url = get_option('source_url', '');
+    $search_term = get_query_var('search_term');
+    $result_json = file_get_contents($source_url . "/api/v1.0.0/cfsearch/" . $search_term);
+    $entries = json_decode($result_json)->by_reggenes;
+    $content = "";
+    $content .= "<table id=\"rgg_causal_flow\" class=\"stripe row-border\">";
+    $content .= "  <thead><tr><th>Mutation</th><th>Role</th><th>Regulator</th><th>Role</th><th>Regulon</th><th>Hazard Ratio</th><th># regulon genes</th></tr></thead>";
+    $content .= "  <tbody>";
+    foreach ($entries as $e) {
+        $content .= "    <tr><td><a href=\"index.php/mutation/?mutation=$e->mutation\">$e->mutation</a></td><td>$e->mutation_role</td>";
+        $content .= "<td><a href=\"index.php/regulator/?regulator=$e->regulator\">$e->regulator_preferred</a></td><td>$e->regulator_role</td><td><a href=\"index.php/bicluster/?bicluster=$e->bicluster\">$e->bicluster</a></td>";
+        $content .= "<td>$e->hazard_ratio</td>";
+        $content .= "<td><a href=\"index.php/bicluster/?bicluster=$e->bicluster#genes\">$e->num_genes</a></td>";
+        $content .= "</tr>";
+    }
+    $content .= "  </tbody>";
+    $content .= "</table>";
+    $content .= "<script>";
+    $content .= "  jQuery(document).ready(function() {";
+    $content .= "    jQuery('#rgg_causal_flow').DataTable({";
+    $content .= "    })";
+    $content .= "  });";
+    $content .= "</script>";
+    return $content;
+}
+
+
 function mmapi_add_shortcodes()
 {
     add_shortcode('summary', 'summary_shortcode');
@@ -887,6 +974,10 @@ function mmapi_add_shortcodes()
     add_shortcode('causal_flow_cytoscape', 'causal_flow_cytoscape_shortcode');
     add_shortcode('causal_flow_mutation_cytoscape', 'causal_flow_mutation_cytoscape_shortcode');
     add_shortcode('causal_flow_regulator_cytoscape', 'causal_flow_regulator_cytoscape_shortcode');
+
+    add_shortcode('mutation_causal_flow_table', 'mutation_causal_flow_table_shortcode');
+    add_shortcode('regulator_causal_flow_table', 'regulator_causal_flow_table_shortcode');
+    add_shortcode('reggenes_causal_flow_table', 'reggenes_causal_flow_table_shortcode');
 }
 
 ?>
