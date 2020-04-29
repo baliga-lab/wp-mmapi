@@ -18,6 +18,7 @@ function summary_shortcode($attr, $content=null)
     $content .= "    <tr><td>" . $summary->num_mutations . "</td><td>Mutations</td></tr>";
     $content .= "    <tr><td>" . $summary->num_regulators . "</td><td>Regulators</td></tr>";
     $content .= "    <tr><td>" . $summary->num_causal_flows . "</td><td>Causal Flows</td></tr>";
+    $content .= "    <tr><td>" . $summary->num_trans_programs . "</td><td>Transcriptional Programs</td></tr>";
     $content .= "  </tbody>";
     $content .= "</table>";
     $content .= "<script>";
