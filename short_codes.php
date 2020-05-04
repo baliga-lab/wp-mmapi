@@ -17,8 +17,9 @@ function summary_shortcode($attr, $content=null)
     $content .= "    <tr><td>" . $summary->num_biclusters . "</td><td>Regulons</td></tr>";
     $content .= "    <tr><td>" . $summary->num_mutations . "</td><td>Mutations</td></tr>";
     $content .= "    <tr><td>" . $summary->num_regulators . "</td><td>Regulators</td></tr>";
-    $content .= "    <tr><td>" . $summary->num_causal_flows . "</td><td>Causal Flows</td></tr>";
+    $content .= "    <tr><td>" . $summary->num_causal_flows . "</td><td>CM Flows</td></tr>";
     $content .= "    <tr><td>" . $summary->num_trans_programs . "</td><td>Transcriptional Programs</td></tr>";
+    $content .= "    <tr><td> 881 </td><td>Patients</td></tr>";
     $content .= "  </tbody>";
     $content .= "</table>";
     $content .= "<script>";
@@ -44,7 +45,7 @@ function mutation_table_shortcode($attr, $content=null)
     $entries = json_decode($result_json)->entries;
 
     $content = "";
-    $content .= "<h3>Causal Flows for Mutation <i>" . $mutation_name . "</i></h3>";
+    $content .= "<h3>Causal Mechanistic Flows for Mutation <i>" . $mutation_name . "</i></h3>";
     $content .= "<table id=\"biclusters\" class=\"stripe row-border\">";
     $content .= "  <thead><tr><th>Regulator</th><th>Role</th><th>Regulon</th><th>Cox Hazard Ratio (Regulon)</th></tr></thead>";
     $content .= "  <tbody>";
@@ -72,7 +73,7 @@ function regulator_table_shortcode($attr, $content=null)
     $result = json_decode($result_json);
     $entries = $result->entries;
     $content = "";
-    $content = "<h3>Causal Flows for Regulator: " . $result->regulator_preferred . "</h3>";
+    $content = "<h3>Causal Mechanistic Flows for Regulator: " . $result->regulator_preferred . "</h3>";
     $content .= "<table id=\"biclusters\" class=\"stripe row-border\">";
     $content .= "  <thead><tr><th>Mutation</th><th>Regulator</th><th>Role</th><th>Regulon</th><th>Cox Hazard Ratio</th></tr></thead>";
     $content .= "  <tbody>";
@@ -249,7 +250,7 @@ function bicluster_cytoscape_shortcode($attr, $content)
     $content .= "        { selector: 'edge', style: { 'line-color': '#000', 'target-arrow-shape': 'triangle', 'target-arrow-color': '#000', 'opacity': 0.8, 'curve-style': 'bezier'}},";
     $content .= "        { selector: '.bicluster', style: { 'background-color': 'red', 'shape': 'square'}},";
     $content .= "        { selector: '.tf', style: { 'background-color': 'blue', 'shape': 'triangle'}},";
-    $content .= "        { selector: '.mutation', style: { 'background-color': 'green', 'shape': 'diamond'}},";
+    $content .= "        { selector: '.mutation', style: { 'background-color': 'pink', 'shape': 'chevron'}},";
     $content .= "        { selector: '.activates', style: { 'line-color': 'red', 'opacity': 0.5}},";
     $content .= "        { selector: '.represses', style: { 'line-color': 'green', 'opacity': 0.5}},";
     $content .= "        { selector: '.up_regulates', style: { 'line-color': 'red', 'opacity': 0.5}},";
@@ -642,7 +643,7 @@ function causal_flow_cytoscape_shortcode($attr, $content)
 
     $content .= "        { selector: '.bicluster', style: { 'background-color': 'red', 'shape': 'square'}},";
     $content .= "        { selector: '.tf', style: { 'background-color': 'blue', 'shape': 'triangle'}},";
-    $content .= "        { selector: '.mutation', style: { 'background-color': 'green', 'shape': 'diamond'}}";
+    $content .= "        { selector: '.mutation', style: { 'background-color': 'pink', 'shape': 'chevron'}}";
     $content .= "      ],";
     #$content .= "      layout: { name: 'cose-bilkent' },";
     $content .= "      layout: { name: 'dagre' },";
@@ -686,7 +687,7 @@ function causal_flow_mutation_cytoscape_shortcode($attr, $content)
 
     $content .= "        { selector: '.bicluster', style: { 'background-color': 'red', 'shape': 'square'}},";
     $content .= "        { selector: '.tf', style: { 'background-color': 'blue', 'shape': 'triangle'}},";
-    $content .= "        { selector: '.mutation', style: { 'background-color': 'green', 'shape': 'diamond'}}";
+    $content .= "        { selector: '.mutation', style: { 'background-color': 'pink', 'shape': 'chevron'}}";
     $content .= "      ],";
     $content .= "      layout: { name: 'dagre' },";
     $content .= "      elements: " . json_encode(json_decode($result_json));
@@ -729,7 +730,7 @@ function causal_flow_regulator_cytoscape_shortcode($attr, $content)
 
     $content .= "        { selector: '.bicluster', style: { 'background-color': 'red', 'shape': 'square'}},";
     $content .= "        { selector: '.tf', style: { 'background-color': 'blue', 'shape': 'triangle'}},";
-    $content .= "        { selector: '.mutation', style: { 'background-color': 'green', 'shape': 'diamond'}}";
+    $content .= "        { selector: '.mutation', style: { 'background-color': 'pink', 'shape': 'chevron'}}";
     $content .= "      ],";
     $content .= "      layout: { name: 'dagre' },";
     $content .= "      elements: " . json_encode(json_decode($result_json));
@@ -865,7 +866,7 @@ function mutation_causal_flow_table_shortcode($attr, $content=null)
     $result_json = file_get_contents($source_url . "/api/v1.0.0/cfsearch/" . $search_term);
     $entries = json_decode($result_json)->by_mutation;
     $content = "";
-    $content .= "<h3>Causal Flows regulated by Mutation in <b>" . $search_term . "</b></h3>";
+    $content .= "<h3>Causal Mechanistic Flows regulated by Mutation in <b>" . $search_term . "</b></h3>";
     $content = add_causal_flow_table($content, $entries, "mut_causal_flow");
     return $content;
 }
@@ -877,7 +878,7 @@ function regulator_causal_flow_table_shortcode($attr, $content=null)
     $result_json = file_get_contents($source_url . "/api/v1.0.0/cfsearch/" . $search_term);
     $entries = json_decode($result_json)->by_regulator;
     $content = "";
-    $content .= "<h3>Causal Flows with <b>" . $search_term . "</b> as Regulator</h3>";
+    $content .= "<h3>Causal Mechanistic Flows with <b>" . $search_term . "</b> as Regulator</h3>";
     $content = add_causal_flow_table($content, $entries, "reg_causal_flow");
     return $content;
 }
@@ -890,7 +891,7 @@ function reggenes_causal_flow_table_shortcode($attr, $content=null)
     $result_json = file_get_contents($source_url . "/api/v1.0.0/cfsearch/" . $search_term);
     $entries = json_decode($result_json)->by_reggenes;
     $content = "";
-    $content .= "<h3>Causal Flows with regulons containing <b>" . $search_term . "</b> gene</h3>";
+    $content .= "<h3>Causal Mechanistic Flows with regulons containing <b>" . $search_term . "</b></h3>";
     $content = add_causal_flow_table($content, $entries, "rgg_causal_flow");
     return $content;
 }
@@ -903,7 +904,7 @@ function program_causal_flow_table_shortcode($attr, $content=null)
     $result_json = file_get_contents($source_url . "/api/v1.0.0/causal_flows_with_program/" . $program);
     $entries = json_decode($result_json)->entries;
     $content = "";
-    $content .= "<h3>Causal Flows with regulons containing program <b>" . $program . "</b></h3>";
+    $content .= "<h3>Causal Mechanistic Flows with regulons containing program <b>" . $program . "</b></h3>";
     $content = add_causal_flow_table($content, $entries, "prog_causal_flow");
     return $content;
 }
