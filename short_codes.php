@@ -231,6 +231,13 @@ function search_results_shortcode($attr, $content)
     return $content;
 }
 
+function no_search_results_shortcode($attr, $content)
+{
+    $search_term = $_GET['search_term'];
+    $content .= "<p>Search for term '$search_term' did not yeld any results.</p>";
+    return $content;
+}
+
 function bicluster_cytoscape_shortcode($attr, $content)
 {
     $bicluster_name = get_query_var('bicluster');
@@ -922,6 +929,7 @@ function mmapi_add_shortcodes()
 
     add_shortcode('mmapi_search_box', 'search_box_shortcode');
     add_shortcode('mmapi_search_results', 'search_results_shortcode');
+    add_shortcode('mmapi_no_search_results', 'no_search_results_shortcode');
 
     add_shortcode('gene_biclusters_table', 'gene_biclusters_table_shortcode');
     add_shortcode('gene_info', 'gene_info_shortcode');
