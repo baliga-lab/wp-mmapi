@@ -234,7 +234,7 @@ function search_results_shortcode($attr, $content)
 function no_search_results_shortcode($attr, $content)
 {
     $search_term = $_GET['search_term'];
-    $content .= "<p>Search for term '$search_term' did not yeld any results.</p>";
+    $content .= "<p>The search term '$search_term' did not yield any results.</p>";
     return $content;
 }
 
