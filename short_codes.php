@@ -875,7 +875,7 @@ function mutation_causal_flow_table_shortcode($attr, $content=null)
     $content = "";
     $content .= "<h3>Causal Mechanistic Flows regulated by Mutation in <b>" . $search_term . "</b></h3>";
     if (count($entries) == 0) {
-        $content .= "<p>The search term '$search_term' did not yield any results.</p>";
+        $content .= "<p>No CM Flow results regulated by a mutation matched your query '$search_term'.</p>";
     } else {
         $content = add_causal_flow_table($content, $entries, "mut_causal_flow");
     }
@@ -891,7 +891,7 @@ function regulator_causal_flow_table_shortcode($attr, $content=null)
     $content = "";
     $content .= "<h3>Causal Mechanistic Flows with <b>" . $search_term . "</b> as Regulator</h3>";
     if (count($entries) == 0) {
-        $content .= "<p>The search term '$search_term' did not yield any results.</p>";
+        $content .= "<p>No CM Flow results regulated by a regulator matched your query '$search_term'.</p>";
     } else {
         $content = add_causal_flow_table($content, $entries, "reg_causal_flow");
     }
@@ -908,7 +908,7 @@ function reggenes_causal_flow_table_shortcode($attr, $content=null)
     $content = "";
     $content .= "<h3>Causal Mechanistic Flows with regulons containing <b>" . $search_term . "</b></h3>";
     if (count($entries) == 0) {
-        $content .= "<p>The search term '$search_term' did not yield any results.</p>";
+        $content .= "<p>No CM Flow results contains genes matching your query '$search_term'.</p>";
     } else {
         $content = add_causal_flow_table($content, $entries, "rgg_causal_flow");
     }
