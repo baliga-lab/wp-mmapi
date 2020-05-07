@@ -124,6 +124,13 @@ function search_mmapi()
     $result_json = file_get_contents($source_url . "/api/v1.0.0/cfsearch/" .
                                      rawurlencode($search_term));
     $result = json_decode($result_json);
+
+    // Short circuit search results
+    $page = get_page_by_path('search-results');
+    wp_safe_redirect(get_permalink($page->ID) . "?search_term=" . rawurlencode($search_term));
+    exit;
+
+    /*
     if ($result->found == "no") {
         $page = get_page_by_path('no-search-results-found');
         wp_safe_redirect(get_permalink($page->ID) . "?search_term=" . rawurlencode($search_term));
@@ -132,29 +139,7 @@ function search_mmapi()
         $page = get_page_by_path('search-results');
         wp_safe_redirect(get_permalink($page->ID) . "?search_term=" . rawurlencode($search_term));
         exit;
-        /*
-        if ($result->data_type == "bicluster") {
-            $page = get_page_by_path('bicluster');
-            wp_safe_redirect(get_permalink($page->ID) . "?bicluster=" . rawurlencode($search_term));
-            exit;
-        } else if ($result->data_type == "mutation") {
-            $page = get_page_by_path('mutation');
-            wp_safe_redirect(get_permalink($page->ID) . "?mutation=" . rawurlencode($search_term));
-            exit;
-        } else if ($result->data_type == "regulator") {
-            $page = get_page_by_path('regulator');
-            wp_safe_redirect(get_permalink($page->ID) . "?regulator=" . rawurlencode($search_term));
-            exit;
-        } else if ($result->data_type == "gene") {
-            $page = get_page_by_path('gene-biclusters');
-            wp_safe_redirect(get_permalink($page->ID) . "?gene=" . rawurlencode($search_term));
-            exit;
-        } else {
-            $page = get_page_by_path('no-search-results-found');
-            wp_safe_redirect(get_permalink($page->ID) . "?search_term=" . rawurlencode($search_term));
-            exit;
-            }*/
-    }
+        }*/
 }
 
 add_action('admin_init', 'mmapi_settings_init');

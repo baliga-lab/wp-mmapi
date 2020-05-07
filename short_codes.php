@@ -873,7 +873,11 @@ function mutation_causal_flow_table_shortcode($attr, $content=null)
     $entries = json_decode($result_json)->by_mutation;
     $content = "";
     $content .= "<h3>Causal Flows regulated by Mutation in <b>" . $search_term . "</b></h3>";
-    $content = add_causal_flow_table($content, $entries, "mut_causal_flow");
+    if (count($entries) == 0) {
+        $content .= "<p>The search term '$search_term' did not yield any results.</p>";
+    } else {
+        $content = add_causal_flow_table($content, $entries, "mut_causal_flow");
+    }
     return $content;
 }
 
@@ -885,7 +889,11 @@ function regulator_causal_flow_table_shortcode($attr, $content=null)
     $entries = json_decode($result_json)->by_regulator;
     $content = "";
     $content .= "<h3>Causal Flows with <b>" . $search_term . "</b> as Regulator</h3>";
-    $content = add_causal_flow_table($content, $entries, "reg_causal_flow");
+    if (count($entries) == 0) {
+        $content .= "<p>The search term '$search_term' did not yield any results.</p>";
+    } else {
+        $content = add_causal_flow_table($content, $entries, "reg_causal_flow");
+    }
     return $content;
 }
 
@@ -898,7 +906,11 @@ function reggenes_causal_flow_table_shortcode($attr, $content=null)
     $entries = json_decode($result_json)->by_reggenes;
     $content = "";
     $content .= "<h3>Causal Flows with regulons containing <b>" . $search_term . "</b> gene</h3>";
-    $content = add_causal_flow_table($content, $entries, "rgg_causal_flow");
+    if (count($entries) == 0) {
+        $content .= "<p>The search term '$search_term' did not yield any results.</p>";
+    } else {
+        $content = add_causal_flow_table($content, $entries, "rgg_causal_flow");
+    }
     return $content;
 }
 
