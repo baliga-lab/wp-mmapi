@@ -539,6 +539,42 @@ function bicluster_survival_plot_shortcode($attr, $content=null)
     }
 }
 
+function mutation_survival_plot_shortcode($attr, $content=null)
+{
+    $mutation_name = get_query_var('mutation');
+    $mname = "mutation_" . $mutation_name . "_survival";
+    $static_url = get_option('static_url', '');
+    // check if available, otherwise return nothing
+    $img_url = $static_url . "/mutation_survival_plots/" . rawurlencode($mname) . ".png";
+    $file_headers = @get_headers($img_url);
+    if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found'
+        || $file_headers[0] == 'HTTP/1.1 400 Bad Request') {
+        return "<p>no survival information available</p>";
+    }
+    else {
+        return "<img src=\"" . $img_url . "\"></img>";
+    }
+}
+
+
+function program_survival_plot_shortcode($attr, $content=null)
+{
+    $program_name = get_query_var('program');
+    $pname = "program_" . $program_name . "_survival";
+    $static_url = get_option('static_url', '');
+    // check if available, otherwise return nothing
+    $img_url = $static_url . "/mutation_survival_plots/" . rawurlencode($pname) . ".png";
+    $file_headers = @get_headers($img_url);
+    if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found'
+        || $file_headers[0] == 'HTTP/1.1 400 Bad Request') {
+        return "<p>no survival information available</p>";
+    }
+    else {
+        return "<img src=\"" . $img_url . "\"></img>";
+    }
+}
+
+
 function patient_info_shortcode($attr, $content=null)
 {
     $patient_name = get_query_var('patient');
@@ -960,6 +996,8 @@ function mmapi_add_shortcodes()
 
     add_shortcode('regulator_survival_plot', 'regulator_survival_plot_shortcode');
     add_shortcode('bicluster_survival_plot', 'bicluster_survival_plot_shortcode');
+    add_shortcode('mutation_survival_plot', 'mutation_survival_plot_shortcode');
+    add_shortcode('program_survival_plot', 'program_survival_plot_shortcode');
 
     add_shortcode('patient_info', 'patient_info_shortcode');
     add_shortcode('patient_tf_activity_table', 'patient_tf_activity_table_shortcode');
