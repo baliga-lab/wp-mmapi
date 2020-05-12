@@ -563,7 +563,7 @@ function program_survival_plot_shortcode($attr, $content=null)
     $pname = "program_" . $program_name . "_survival";
     $static_url = get_option('static_url', '');
     // check if available, otherwise return nothing
-    $img_url = $static_url . "/mutation_survival_plots/" . rawurlencode($pname) . ".png";
+    $img_url = $static_url . "/program_survival_plots/" . rawurlencode($pname) . ".png";
     $file_headers = @get_headers($img_url);
     if (!$file_headers || $file_headers[0] == 'HTTP/1.1 404 Not Found'
         || $file_headers[0] == 'HTTP/1.1 400 Bad Request') {
