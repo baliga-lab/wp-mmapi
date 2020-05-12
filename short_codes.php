@@ -47,10 +47,10 @@ function mutation_table_shortcode($attr, $content=null)
     $content = "";
     $content .= "<h3>Causal Mechanistic Flows for Mutation <i>" . $mutation_name . "</i></h3>";
     $content .= "<table id=\"biclusters\" class=\"stripe row-border\">";
-    $content .= "  <thead><tr><th>Regulator</th><th>Role</th><th>Regulon</th><th>Cox Hazard Ratio (Regulon)</th></tr></thead>";
+    $content .= "  <thead><tr><th>Regulator</th><th>Role</th><th>Regulon</th><th>Cox Hazard Ratio (Regulon)</th><th>Transcriptional Programs</th></tr></thead>";
     $content .= "  <tbody>";
     foreach ($entries as $e) {
-        $content .= "    <tr><td><a href=\"index.php/regulator/?regulator=" . $e->regulator . "\">" . $e->regulator_preferred . "</a></td><td class=\"$e->role\">" . $e->role . "</td><td><a href=\"index.php/bicluster/?bicluster=" . $e->bicluster . "\">" . $e->bicluster . "</a></td><td>$e->bc_cox_hazard_ratio</td></tr>";
+        $content .= "    <tr><td><a href=\"index.php/regulator/?regulator=" . $e->regulator . "\">" . $e->regulator_preferred . "</a></td><td class=\"$e->role\">" . $e->role . "</td><td><a href=\"index.php/bicluster/?bicluster=" . $e->bicluster . "\">" . $e->bicluster . "</a></td><td>$e->bc_cox_hazard_ratio</td><td><a href=\"index.php/program/?program=" . $e->trans_program . "\">Pr-$e->trans_program</a></td></tr>";
     }
     $content .= "  </tbody>";
     $content .= "</table>";
@@ -75,11 +75,11 @@ function regulator_table_shortcode($attr, $content=null)
     $content = "";
     $content = "<h3>Causal Mechanistic Flows for Regulator: " . $result->regulator_preferred . "</h3>";
     $content .= "<table id=\"biclusters\" class=\"stripe row-border\">";
-    $content .= "  <thead><tr><th>Mutation</th><th>Regulator</th><th>Role</th><th>Regulon</th><th>Cox Hazard Ratio</th></tr></thead>";
+    $content .= "  <thead><tr><th>Mutation</th><th>Regulator</th><th>Role</th><th>Regulon</th><th>Cox Hazard Ratio</th><th>Transcriptional Program</th></tr></thead>";
     $content .= "  <tbody>";
     foreach ($entries as $e) {
         $content .= "    <tr><td><a href=\"index.php/mutation/?mutation=" . $e->mutation . "\">" . $e->mutation . "</a></td><td>$result->regulator_preferred</td><td class=\"$e->role\">" . $e->role . "</td><td><a href=\"index.php/bicluster/?bicluster=" . $e->bicluster . "\">" .
-                 $e->bicluster . "</a></td><td>" . $e->hazard_ratio  . "</td></tr>";
+                 $e->bicluster . "</a></td><td>" . $e->hazard_ratio  . "</td><td><a href=\"index.php/program/?program=" . $result->trans_program . "\">Pr-$result->trans_program</a></td></tr>";
     }
     $content .= "  </tbody>";
     $content .= "</table>";
@@ -397,7 +397,7 @@ function bicluster_summary_shortcode($attr, $content)
     $content .= "<table id=\"summary1\" class=\"row-border\" style=\"margin-bottom: 10px\">";
     $content .= "  <thead><tr><th>Genes</th><th>Cox Hazard Ratio</th><th>Regulators</th><th>Causal Flows</th><th>Transcriptional Program</th><th>Drugs</th><th>Mechanism of Action</th><th>Hallmarks</th><th>Target Class</th></tr></thead>";
     $content .= "  <tbody>";
-    $content .= "    <tr><td><a href=\"#genes\">$num_genes</a></td><td>$result->hazard_ratio</td><td><a href=\"#regulators\">$num_regulators</a></td><td>$result->num_causal_flows</td><td><a href=\"index.php/program/?program=" . $result->trans_program . "\">$result->trans_program</a></td><td>$drugs</td><td>$moas</td><td>$hallmarks</td><td>$target_class</td></tr>";
+    $content .= "    <tr><td><a href=\"#genes\">$num_genes</a></td><td>$result->hazard_ratio</td><td><a href=\"#regulators\">$num_regulators</a></td><td>$result->num_causal_flows</td><td><a href=\"index.php/program/?program=" . $result->trans_program . "\">Pr-$result->trans_program</a></td><td>$drugs</td><td>$moas</td><td>$hallmarks</td><td>$target_class</td></tr>";
     $content .= "  </tbody>";
     $content .= "</table>";
 
@@ -606,7 +606,7 @@ function add_causal_flow_table($content, $entries, $tableId) {
         $content .= "<td><a href=\"index.php/regulator/?regulator=$e->regulator\">$e->regulator_preferred</a></td><td>$e->regulator_role</td><td><a href=\"index.php/bicluster/?bicluster=$e->bicluster\">$e->bicluster</a></td>";
         $content .= "<td>$e->hazard_ratio</td>";
         $content .= "<td><a href=\"index.php/bicluster/?bicluster=$e->bicluster#genes\">$e->num_genes</a></td>";
-        $content .= "<td><a href=\"index.php/program/?program=$e->trans_program\">$e->trans_program</a></td>";
+        $content .= "<td><a href=\"index.php/program/?program=$e->trans_program\">Pr-$e->trans_program</a></td>";
         $content .= "</tr>";
     }
     $content .= "  </tbody>";
@@ -923,7 +923,7 @@ function program_causal_flow_table_shortcode($attr, $content=null)
     $result_json = file_get_contents($source_url . "/api/v1.0.0/causal_flows_with_program/" . $program);
     $entries = json_decode($result_json)->entries;
     $content = "";
-    $content .= "<h3>Causal Mechanistic Flows with regulons containing program <b>" . $program . "</b></h3>";
+    $content .= "<h3>Causal Mechanistic Flows with regulons containing program Pr-<b>" . $program . "</b></h3>";
     $content = add_causal_flow_table($content, $entries, "prog_causal_flow");
     return $content;
 }
