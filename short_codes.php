@@ -246,7 +246,7 @@ function bicluster_cytoscape_shortcode($attr, $content)
     $result_json = file_get_contents($source_url . "/api/v1.0.0/bicluster_network/" .
                                      rawurlencode($bicluster_name));
     $content = "";
-    $content .= "<div id=\"cytoscape\"><h3>Causal Flow Network</h3></div>";
+    $content .= "<div id=\"cytoscape\"><h3>Causal Mechanistic Flow Network</h3></div>";
     $content .= "<script>";
     $content .= "  jQuery(document).ready(function() {";
     $content .= "    var cy = cytoscape({";
@@ -257,7 +257,7 @@ function bicluster_cytoscape_shortcode($attr, $content)
     $content .= "        { selector: 'edge', style: { 'line-color': '#000', 'target-arrow-shape': 'triangle', 'target-arrow-color': '#000', 'opacity': 0.8, 'curve-style': 'bezier'}},";
     $content .= "        { selector: '.bicluster', style: { 'background-color': 'red', 'shape': 'square'}},";
     $content .= "        { selector: '.tf', style: { 'background-color': 'blue', 'shape': 'triangle'}},";
-    $content .= "        { selector: '.mutation', style: { 'background-color': 'pink', 'shape': 'polygon', 'shape-polygon-points': '-1 -1 0 -0.45 1 -1 0 1'}},";
+    $content .= "        { selector: '.mutation', style: { 'background-color': '#eb008b', 'shape': 'polygon', 'shape-polygon-points': '-1 -1 0 -0.45 1 -1 0 1'}},";
     $content .= "        { selector: '.activates', style: { 'line-color': 'red', 'opacity': 0.5}},";
     $content .= "        { selector: '.represses', style: { 'line-color': 'green', 'opacity': 0.5}},";
     $content .= "        { selector: '.up_regulates', style: { 'line-color': 'red', 'opacity': 0.5}},";
@@ -650,7 +650,7 @@ function causal_flow_cytoscape_shortcode($attr, $content)
 
     $content .= "        { selector: '.bicluster', style: { 'background-color': 'red', 'shape': 'square'}},";
     $content .= "        { selector: '.tf', style: { 'background-color': 'blue', 'shape': 'triangle'}},";
-    $content .= "        { selector: '.mutation', style: { 'background-color': 'pink', 'shape': 'polygon', 'shape-polygon-points': '-1 -1 0 -0.45 1 -1 0 1'}}";
+    $content .= "        { selector: '.mutation', style: { 'background-color': '#eb008b', 'shape': 'polygon', 'shape-polygon-points': '-1 -1 0 -0.45 1 -1 0 1'}}";
     $content .= "      ],";
     #$content .= "      layout: { name: 'cose-bilkent' },";
     $content .= "      layout: { name: 'dagre' },";
@@ -694,7 +694,7 @@ function causal_flow_mutation_cytoscape_shortcode($attr, $content)
 
     $content .= "        { selector: '.bicluster', style: { 'background-color': 'red', 'shape': 'square'}},";
     $content .= "        { selector: '.tf', style: { 'background-color': 'blue', 'shape': 'triangle'}},";
-    $content .= "        { selector: '.mutation', style: { 'background-color': 'pink', 'shape': 'polygon', 'shape-polygon-points': '-1 -1 0 -0.45 1 -1 0 1'}}";
+    $content .= "        { selector: '.mutation', style: { 'background-color': '#eb008b', 'shape': 'polygon', 'shape-polygon-points': '-1 -1 0 -0.45 1 -1 0 1'}}";
     $content .= "      ],";
     $content .= "      layout: { name: 'dagre' },";
     $content .= "      elements: " . json_encode(json_decode($result_json));
@@ -737,7 +737,7 @@ function causal_flow_regulator_cytoscape_shortcode($attr, $content)
 
     $content .= "        { selector: '.bicluster', style: { 'background-color': 'red', 'shape': 'square'}},";
     $content .= "        { selector: '.tf', style: { 'background-color': 'blue', 'shape': 'triangle'}},";
-    $content .= "        { selector: '.mutation', style: { 'background-color': 'pink', 'shape': 'polygon', 'shape-polygon-points': '-1 -1 0 -0.45 1 -1 0 1'}}";
+    $content .= "        { selector: '.mutation', style: { 'background-color': '#eb008b', 'shape': 'polygon', 'shape-polygon-points': '-1 -1 0 -0.45 1 -1 0 1'}}";
     $content .= "      ],";
     $content .= "      layout: { name: 'dagre' },";
     $content .= "      elements: " . json_encode(json_decode($result_json));
