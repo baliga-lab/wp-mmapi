@@ -50,7 +50,7 @@ function mutation_table_shortcode($attr, $content=null)
     $content .= "  <thead><tr><th>Regulator</th><th>Role</th><th>Regulon</th><th>Cox Hazard Ratio (Regulon)</th><th>Transcriptional Programs</th></tr></thead>";
     $content .= "  <tbody>";
     foreach ($entries as $e) {
-        $content .= "    <tr><td><a href=\"index.php/regulator/?regulator=" . $e->regulator . "\">" . $e->regulator_preferred . "</a></td><td class=\"$e->role\">" . $e->role . "</td><td><a href=\"index.php/bicluster/?bicluster=" . $e->bicluster . "\">" . $e->bicluster . "</a></td><td>$e->bc_cox_hazard_ratio</td><td><a href=\"index.php/program/?program=" . $e->trans_program . "\">Pr-$e->trans_program</a></td></tr>";
+        $content .= "    <tr><td><a href=\"index.php/regulator/?regulator=" . $e->regulator . "\">" . $e->regulator_preferred . "</a></td><td class=\"$e->role\">" . $e->role . "</td><td><a href=\"index.php/bicluster/?bicluster=" . $e->bicluster . "\">" . $e->bicluster . "</a></td><td>$e->bc_cox_hazard_ratio</td><td><a href=\"index.php/program/?program=" . $e->trans_program . "\">Pr-" . $e->trans_program . "</a></td></tr>";
     }
     $content .= "  </tbody>";
     $content .= "</table>";
