@@ -232,6 +232,13 @@ function search_results_shortcode($attr, $content)
     return $content;
 }
 
+function no_search_results_shortcode($attr, $content)
+{
+    $search_term = $_GET['search_term'];
+    $content .= "<p>The search term '$search_term' did not yield any results.</p>";
+    return $content;
+}
+
 function bicluster_cytoscape_shortcode($attr, $content)
 {
     $bicluster_name = get_query_var('bicluster');
@@ -250,7 +257,7 @@ function bicluster_cytoscape_shortcode($attr, $content)
     $content .= "        { selector: 'edge', style: { 'line-color': '#000', 'target-arrow-shape': 'triangle', 'target-arrow-color': '#000', 'opacity': 0.8, 'curve-style': 'bezier'}},";
     $content .= "        { selector: '.bicluster', style: { 'background-color': 'red', 'shape': 'square'}},";
     $content .= "        { selector: '.tf', style: { 'background-color': 'blue', 'shape': 'triangle'}},";
-    $content .= "        { selector: '.mutation', style: { 'background-color': 'pink', 'shape': 'chevron'}},";
+    $content .= "        { selector: '.mutation', style: { 'background-color': 'pink', 'shape': 'polygon', 'shape-polygon-points': '-1 -1 0 -0.45 1 -1 0 1'}},";
     $content .= "        { selector: '.activates', style: { 'line-color': 'red', 'opacity': 0.5}},";
     $content .= "        { selector: '.represses', style: { 'line-color': 'green', 'opacity': 0.5}},";
     $content .= "        { selector: '.up_regulates', style: { 'line-color': 'red', 'opacity': 0.5}},";
@@ -643,7 +650,7 @@ function causal_flow_cytoscape_shortcode($attr, $content)
 
     $content .= "        { selector: '.bicluster', style: { 'background-color': 'red', 'shape': 'square'}},";
     $content .= "        { selector: '.tf', style: { 'background-color': 'blue', 'shape': 'triangle'}},";
-    $content .= "        { selector: '.mutation', style: { 'background-color': 'pink', 'shape': 'chevron'}}";
+    $content .= "        { selector: '.mutation', style: { 'background-color': 'pink', 'shape': 'polygon', 'shape-polygon-points': '-1 -1 0 -0.45 1 -1 0 1'}}";
     $content .= "      ],";
     #$content .= "      layout: { name: 'cose-bilkent' },";
     $content .= "      layout: { name: 'dagre' },";
@@ -687,7 +694,7 @@ function causal_flow_mutation_cytoscape_shortcode($attr, $content)
 
     $content .= "        { selector: '.bicluster', style: { 'background-color': 'red', 'shape': 'square'}},";
     $content .= "        { selector: '.tf', style: { 'background-color': 'blue', 'shape': 'triangle'}},";
-    $content .= "        { selector: '.mutation', style: { 'background-color': 'pink', 'shape': 'chevron'}}";
+    $content .= "        { selector: '.mutation', style: { 'background-color': 'pink', 'shape': 'polygon', 'shape-polygon-points': '-1 -1 0 -0.45 1 -1 0 1'}}";
     $content .= "      ],";
     $content .= "      layout: { name: 'dagre' },";
     $content .= "      elements: " . json_encode(json_decode($result_json));
@@ -730,7 +737,7 @@ function causal_flow_regulator_cytoscape_shortcode($attr, $content)
 
     $content .= "        { selector: '.bicluster', style: { 'background-color': 'red', 'shape': 'square'}},";
     $content .= "        { selector: '.tf', style: { 'background-color': 'blue', 'shape': 'triangle'}},";
-    $content .= "        { selector: '.mutation', style: { 'background-color': 'pink', 'shape': 'chevron'}}";
+    $content .= "        { selector: '.mutation', style: { 'background-color': 'pink', 'shape': 'polygon', 'shape-polygon-points': '-1 -1 0 -0.45 1 -1 0 1'}}";
     $content .= "      ],";
     $content .= "      layout: { name: 'dagre' },";
     $content .= "      elements: " . json_encode(json_decode($result_json));
@@ -867,7 +874,11 @@ function mutation_causal_flow_table_shortcode($attr, $content=null)
     $entries = json_decode($result_json)->by_mutation;
     $content = "";
     $content .= "<h3>Causal Mechanistic Flows regulated by Mutation in <b>" . $search_term . "</b></h3>";
-    $content = add_causal_flow_table($content, $entries, "mut_causal_flow");
+    if (count($entries) == 0) {
+        $content .= "<p>No CM Flow results regulated by a mutation matched your query '$search_term'.</p>";
+    } else {
+        $content = add_causal_flow_table($content, $entries, "mut_causal_flow");
+    }
     return $content;
 }
 
@@ -879,7 +890,11 @@ function regulator_causal_flow_table_shortcode($attr, $content=null)
     $entries = json_decode($result_json)->by_regulator;
     $content = "";
     $content .= "<h3>Causal Mechanistic Flows with <b>" . $search_term . "</b> as Regulator</h3>";
-    $content = add_causal_flow_table($content, $entries, "reg_causal_flow");
+    if (count($entries) == 0) {
+        $content .= "<p>No CM Flow results regulated by a regulator matched your query '$search_term'.</p>";
+    } else {
+        $content = add_causal_flow_table($content, $entries, "reg_causal_flow");
+    }
     return $content;
 }
 
@@ -892,7 +907,11 @@ function reggenes_causal_flow_table_shortcode($attr, $content=null)
     $entries = json_decode($result_json)->by_reggenes;
     $content = "";
     $content .= "<h3>Causal Mechanistic Flows with regulons containing <b>" . $search_term . "</b></h3>";
-    $content = add_causal_flow_table($content, $entries, "rgg_causal_flow");
+    if (count($entries) == 0) {
+        $content .= "<p>No CM Flow results contains genes matching your query '$search_term'.</p>";
+    } else {
+        $content = add_causal_flow_table($content, $entries, "rgg_causal_flow");
+    }
     return $content;
 }
 
@@ -923,6 +942,7 @@ function mmapi_add_shortcodes()
 
     add_shortcode('mmapi_search_box', 'search_box_shortcode');
     add_shortcode('mmapi_search_results', 'search_results_shortcode');
+    add_shortcode('mmapi_no_search_results', 'no_search_results_shortcode');
 
     add_shortcode('gene_biclusters_table', 'gene_biclusters_table_shortcode');
     add_shortcode('gene_info', 'gene_info_shortcode');
