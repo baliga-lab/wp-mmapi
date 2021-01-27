@@ -964,6 +964,67 @@ function program_causal_flow_table_shortcode($attr, $content=null)
     return $content;
 }
 
+function program_regulon_table_shortcode($attr, $content=null)
+{
+    $source_url = get_option('source_url', '');
+    $program = get_query_var('program');
+    $result_json = file_get_contents($source_url . "/api/v1.0.0/program/" . $program);
+    $regulons = json_decode($result_json)->regulons;
+    $content = "";
+    $content .= "<h3>Regulons containing program Pr-<b>" . $program . "</b></h3>";
+    $content .= "<table id=\"prog_regulons\" class=\"stripe row-border\">";
+    $content .= "  <thead><tr><th>Regulon</th>";
+    $content .= "  <th>Cox Hazard Ratio</th>";
+    $content .= "  <th># genes</th>";
+    $content .= "  <th># causal flows</th>";
+    $content .= "</tr></thead>";
+    $content .= "  <tbody>";
+    foreach ($regulons as $r) {
+        $content .= "    <tr><td><a href=\"index.php/bicluster/?bicluster=" . $r->regulon_id . "\">$r->name</a></td>";
+        $content .= "<td>$r->cox_hazard_ratio</td>";
+        $content .= "<td>$r->num_genes</td>";
+        $content .= "<td>$r->num_causal_flows</td>";
+        $content .= "</tr>";
+    }
+    $content .= "  </tbody>";
+    $content .= "</table>";
+    $content .= "<script>";
+    $content .= "  jQuery(document).ready(function() {";
+    $content .= "    jQuery('#prog_regulons').DataTable({";
+    $content .= "    })";
+    $content .= "  });";
+    $content .= "</script>";
+    return $content;
+}
+
+function program_gene_table_shortcode($attr, $content=null)
+{
+    $source_url = get_option('source_url', '');
+    $program = get_query_var('program');
+    $result_json = file_get_contents($source_url . "/api/v1.0.0/program/" . $program);
+    $genes = json_decode($result_json)->genes;
+    $content = "";
+    $content .= "<h3>Genes in program Pr-<b>" . $program . "</b></h3>";
+    $content .= "<table id=\"prog_genes\" class=\"stripe row-border\">";
+    $content .= "  <thead><tr><th>EnsEMBL Id</th><th>Entrez Id</th><th>Preferred</th></tr></thead>";
+    $content .= "  <tbody>";
+    foreach ($genes as $g) {
+        $content .= "    <tr><td><a href=\"http://www.ensembl.org/id/$g->ensembl_id\" target=\"_blank\">$g->ensembl_id</a></td>";
+        $content .= "    <td><a href=\"https://www.ncbi.nlm.nih.gov/gene/?term=$g->entrez_id\" target=\"_blank\">$g->entrez_id</td>";
+        $content .= "<td>$g->preferred</td>";
+        $content .= "</tr>";
+    }
+    $content .= "  </tbody>";
+    $content .= "</table>";
+    $content .= "<script>";
+    $content .= "  jQuery(document).ready(function() {";
+    $content .= "    jQuery('#prog_genes').DataTable({";
+    $content .= "    })";
+    $content .= "  });";
+    $content .= "</script>";
+    return $content;
+}
+
 function mmapi_add_shortcodes()
 {
     add_shortcode('summary', 'summary_shortcode');
@@ -1011,6 +1072,8 @@ function mmapi_add_shortcodes()
     add_shortcode('regulator_causal_flow_table', 'regulator_causal_flow_table_shortcode');
     add_shortcode('reggenes_causal_flow_table', 'reggenes_causal_flow_table_shortcode');
     add_shortcode('program_causal_flow_table', 'program_causal_flow_table_shortcode');
+    add_shortcode('program_regulon_table', 'program_regulon_table_shortcode');
+    add_shortcode('program_gene_table', 'program_gene_table_shortcode');
 }
 
 ?>
