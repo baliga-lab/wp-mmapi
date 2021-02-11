@@ -1025,6 +1025,37 @@ function program_gene_table_shortcode($attr, $content=null)
     return $content;
 }
 
+function program_info_shortcode($attr, $content=null)
+{
+    $source_url = get_option('source_url', '');
+    $program = get_query_var('program');
+    $result_json = file_get_contents($source_url . "/api/v1.0.0/program/" . $program);
+    $info = json_decode($result_json);
+    $num_genes = $info->num_genes;
+    $num_regulons = $info->num_regulons;
+    $ens_genes = array();
+    foreach ($info->genes as $g) {
+        array_push($ens_genes, $g->ensembl_id);
+    }
+    $genes = implode(", ", $ens_genes);
+    $regulon_ids = array();
+    foreach ($info->regulons as $r) {
+        array_push($regulon_ids, $r->regulon_id);
+    }
+    $regulons = implode(", ", $regulon_ids);
+
+    $content = "<button id=\"program_info_but\" type=\"button\" class=\"btn btn-primary\">\n";
+    $content .= "Pr-$program";
+    $content .= "</button>\n";
+    $content .= "<script>\n";
+    $content .= "  jQuery(document).ready(function() {\n";
+    $content .= "    jQuery('#program_info_but').qtip({ content: '<b>Pr-$program</b><br>Genes ($num_genes)<br>$genes<br>Regulons ($num_regulons):<br>$regulons'});\n";
+    $content .= "  })\n";
+    $content .= "</script>\n";
+
+    return $content;
+}
+
 function mmapi_add_shortcodes()
 {
     add_shortcode('summary', 'summary_shortcode');
@@ -1074,6 +1105,9 @@ function mmapi_add_shortcodes()
     add_shortcode('program_causal_flow_table', 'program_causal_flow_table_shortcode');
     add_shortcode('program_regulon_table', 'program_regulon_table_shortcode');
     add_shortcode('program_gene_table', 'program_gene_table_shortcode');
+
+    add_shortcode('program_info', 'program_info_shortcode');
+
 }
 
 ?>
