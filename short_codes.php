@@ -980,7 +980,7 @@ function program_regulon_table_shortcode($attr, $content=null)
     $content .= "</tr></thead>";
     $content .= "  <tbody>";
     foreach ($regulons as $r) {
-        $content .= "    <tr><td><a href=\"index.php/bicluster/?bicluster=" . $r->regulon_id . "\">$r->name</a></td>";
+        $content .= "    <tr><td><a href=\"index.php/bicluster/?bicluster=" . $r->name . "\">$r->name</a></td>";
         $content .= "<td>$r->cox_hazard_ratio</td>";
         $content .= "<td>$r->num_genes</td>";
         $content .= "<td>$r->num_causal_flows</td>";
