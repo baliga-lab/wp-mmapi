@@ -959,7 +959,7 @@ function program_causal_flow_table_shortcode($attr, $content=null)
     $result_json = file_get_contents($source_url . "/api/v1.0.0/causal_flows_with_program/" . $program);
     $entries = json_decode($result_json)->entries;
     $content = "";
-    $content .= "<h3>Causal Mechanistic Flows with regulons containing program Pr-<b>" . $program . "</b></h3>";
+    $content .= "<h3>Causal Mechanistic Flows with regulons in program Pr-<b>" . $program . "</b></h3>";
     $content = add_causal_flow_table($content, $entries, "prog_causal_flow");
     return $content;
 }
@@ -971,7 +971,7 @@ function program_regulon_table_shortcode($attr, $content=null)
     $result_json = file_get_contents($source_url . "/api/v1.0.0/program/" . $program);
     $regulons = json_decode($result_json)->regulons;
     $content = "";
-    $content .= "<h3>Regulons containing program Pr-<b>" . $program . "</b></h3>";
+    $content .= "<h3>Regulons in program Pr-<b>" . $program . "</b></h3>";
     $content .= "<table id=\"prog_regulons\" class=\"stripe row-border\">";
     $content .= "  <thead><tr><th>Regulon</th>";
     $content .= "  <th>Cox Hazard Ratio</th>";
