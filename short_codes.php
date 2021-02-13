@@ -1035,23 +1035,30 @@ function program_info_shortcode($attr, $content=null)
     $num_regulons = $info->num_regulons;
     $ens_genes = array();
     foreach ($info->genes as $g) {
-        array_push($ens_genes, $g->ensembl_id);
+        $preferred = $g->preferred;
+        array_push($ens_genes, "<a href=\"index.php/gene-biclusters/?gene=$preferred\">$preferred</a>");
     }
     $genes = implode(", ", $ens_genes);
-    $regulon_ids = array();
+    $regulon_links = array();
     foreach ($info->regulons as $r) {
-        array_push($regulon_ids, $r->regulon_id);
+        $regulon_id = $r->name;
+        array_push($regulon_links, "<a href=\"index.php/bicluster/?bicluster=$regulon_id\">$regulon_id</a>");
     }
-    $regulons = implode(", ", $regulon_ids);
-
-    $content = "<button id=\"program_info_but\" type=\"button\" class=\"btn btn-primary\">\n";
-    $content .= "Pr-$program";
-    $content .= "</button>\n";
-    $content .= "<script>\n";
-    $content .= "  jQuery(document).ready(function() {\n";
-    $content .= "    jQuery('#program_info_but').qtip({ content: '<b>Pr-$program</b><br>Genes ($num_genes)<br>$genes<br>Regulons ($num_regulons):<br>$regulons'});\n";
-    $content .= "  })\n";
-    $content .= "</script>\n";
+    $regulons = implode(", ", $regulon_links);
+    $content = "<h3><a href=\"#mutation_table\" data-toggle=\"collapse\" aria-expanded=\"false\" aria-controls=\"help\"><i class=\"fas fa-info-circle pull-right\"> Pr-$program</i> </a></h3>\n";
+    $content .= "<div class=\"collapse\" id=\"mutation_table\">\n";
+    $content .= "<div class=\"card card-body\">\n";
+    $content .= "<div class=\"card-header\">\n";
+    $content .= "<h2><a href=\"/program/?program=$program\">Program $program</a></h2>\n";
+    $content .= "</div>\n";
+    $content .= "<p class=\"card-text\"><h4>Genes ($num_genes)</h4>\n";
+    $content .= "$genes";
+    $content .= "</p>\n";
+    $content .= "<p class=\"card-text\"><h4>Regulons ($num_regulons)</h4>\n";
+    $content .= "$regulons";
+    $content .= "</p>";
+    $content .= "</div>\n";
+    $content .= "</div>\n";
 
     return $content;
 }
