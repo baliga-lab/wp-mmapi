@@ -49,8 +49,28 @@ function mutation_table_shortcode($attr, $content=null)
     $content .= "<table id=\"biclusters\" class=\"stripe row-border\">";
     $content .= "  <thead><tr><th>Regulator</th><th>Role</th><th>Regulon</th><th>Cox Hazard Ratio (Regulon)</th><th>Transcriptional Programs</th></tr></thead>";
     $content .= "  <tbody>";
-    foreach ($entries as $e) {
-        $content .= "    <tr><td><a href=\"index.php/regulator/?regulator=" . $e->regulator . "\">" . $e->regulator_preferred . "</a></td><td class=\"$e->role\">" . $e->role . "</td><td><a href=\"index.php/bicluster/?bicluster=" . $e->bicluster . "\">" . $e->bicluster . "</a></td><td>$e->bc_cox_hazard_ratio</td><td><a href=\"index.php/program/?program=" . $e->trans_program . "\">Pr-" . $e->trans_program . "</a></td></tr>";
+    foreach ($entries as $idx=>$e) {
+        $prog_json = json_decode(file_get_contents($source_url . "/api/v1.0.0/program/" . $e->trans_program));
+        // build gene links
+        $ens_genes = array();
+        foreach ($prog_json->genes as $g) {
+            $preferred = $g->preferred;
+            if (strlen($preferred) > 0) {
+                array_push($ens_genes, "<a href=\"index.php/gene-biclusters/?gene=$preferred\">$preferred</a>");
+            }
+        }
+        $num_genes = $prog_json->num_genes;
+        $num_regulons = $prog_json->num_regulons;
+        $genes = implode(", ", $ens_genes);
+        // build regulon links
+        $regulon_links = array();
+        foreach ($prog_json->regulons as $r) {
+            $regulon_id = $r->name;
+            array_push($regulon_links, "<a href=\"index.php/bicluster/?bicluster=$regulon_id\">$regulon_id</a>");
+        }
+        $regulons = implode(", ", $regulon_links);
+
+        $content .= "    <tr><td><a href=\"index.php/regulator/?regulator=" . $e->regulator . "\">" . $e->regulator_preferred . "</a></td><td class=\"$e->role\">" . $e->role . "</td><td><a href=\"index.php/bicluster/?bicluster=" . $e->bicluster . "\">" . $e->bicluster . "</a></td><td>$e->bc_cox_hazard_ratio</td><td><a href=\"index.php/program/?program=" . $e->trans_program . "\">Pr-" . $e->trans_program . "</a>  <a href=\"#coll_$idx\" data-toggle=\"collapse\" aria-expanded=\"false\" aria-controls=\"help\"><i class=\"fas fa-info-circle pull-right\"></i></a><div class=\"collapse\" id=\"coll_$idx\"><div class=\"card card-body\"><p class=\"card-text\"><h4>Genes ($num_genes)</h4><p>$genes</p><h4>Regulons ($num_regulons)</h4><p>$regulons</p></td></tr>";
     }
     $content .= "  </tbody>";
     $content .= "</table>";
